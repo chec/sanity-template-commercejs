@@ -16,6 +16,7 @@
     "node": "14.x"
   },
   "dependencies": {
+    "@chec/commerce.js": "^2.8.0",
     "@mailchimp/mailchimp_marketing": "^3.0.25",
     "@reach/rect": "^0.16.0",
     "@sanity/block-content-to-react": "^3.0.0",

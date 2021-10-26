@@ -1,11 +1,11 @@
 {
   "root": true,
   "api": {
-    "projectId": "ieasd5lg",
+    "projectId": "i5bk8hqn",
     "dataset": "production"
   },
   "project": {
-    "name": "HULL",
+    "name": "Sanity Commerce.js",
     "basePath": "/studio"
   },
   "plugins": [
