@@ -52,6 +52,68 @@ export const ptContent = `
   }
 `
 
+// Construct our "product" GROQ
+export const product = `
+  {
+    "publishDate": coalesce(publishDate, _createdAt),
+    "permalink": slug.current,
+    "id": productID,
+    title,
+    price,
+    comparePrice,
+    description,
+    "photos": {
+      "main": galleryPhotos[]{
+        forOption,
+        photos[]{
+          ${imageMeta}
+        }
+      },
+      "listing": listingPhotos[]{
+        forOption,
+        "default": listingPhoto{
+          ${imageMeta}
+        },
+        "hover": listingPhotoHover{
+          ${imageMeta}
+        }
+      },
+    },
+    inStock,
+    lowStock,
+    useGallery,
+    surfaceOption,
+    options[]{
+      name,
+      position,
+      values[]
+    },
+    optionSettings[]{
+      forOption,
+      "color": color->color,
+    },
+    "variants": *[_type == "productVariant" && productID == ^.productID && wasDeleted != true && isDraft != true]{
+      "id": variantID,
+      title,
+      price,
+      comparePrice,
+      inStock,
+      lowStock,
+      options[]{
+        name,
+        position,
+        value
+      },
+      seo
+    },
+    "klaviyoAccountID": *[_type == "generalSettings"][0].klaviyoAccountID,
+    "filters": filters[]{
+      "slug": filter->slug.current,
+      forOption
+    }
+  }
+`
+
 // Construct our "blocks" GROQ
 export const blocks = `
   _type == 'freeform' => {

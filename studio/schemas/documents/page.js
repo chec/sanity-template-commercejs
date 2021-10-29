@@ -1,6 +1,9 @@
 import React from 'react'
 import { Browser } from 'phosphor-react'
 
+/**
+ * @description A page is a document that can be displayed in a browser
+ */
 export default {
   title: 'Page',
   name: 'page',

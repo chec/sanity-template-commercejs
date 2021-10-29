@@ -17,6 +17,7 @@ const Page = ({ data }) => {
   }
 
   const { site, page } = data
+  console.log('Data from the slug route', data)
 
   return (
     <>

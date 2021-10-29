@@ -1,6 +1,9 @@
 import React from 'react'
 import { Copy } from 'phosphor-react'
 
+/**
+ * @description A variant of a product.
+ */
 export default {
   name: 'productVariant',
   title: 'Variant',

@@ -7,7 +7,7 @@ export default {
   // __experimental_actions: ['update', 'publish'], // disable for initial publish
   fields: [
     {
-      title: 'Shopify Store URL',
+      title: 'Chec store URL',
       name: 'storeURL',
       type: 'url',
       description: (

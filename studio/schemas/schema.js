@@ -3,9 +3,9 @@ import schemaTypes from 'all:part:@sanity/base/schema-type'
 
 // Document types
 import page from './documents/page'
-import product from './documents/shopify-product'
-import productVariant from './documents/shopify-variant'
-import collection from './documents/shopify-collection'
+import product from './documents/commerce-product'
+import productVariant from './documents/commerce-variant'
+import collection from './documents/commerce-collection'
 import filter from './documents/filter'
 import solidColor from './documents/color'
 
@@ -29,6 +29,9 @@ import productHero from './modules/product-hero'
 import collectionGrid from './modules/collection-grid'
 
 // Object types
+import price from './objects/commerce-product-price'
+import commerceSeo from './objects/commerce-product-seo';
+
 import gridColumn from './objects/grid-column'
 import gridSize from './objects/grid-size'
 import seo from './objects/seo'
@@ -58,6 +61,7 @@ import accordion from './objects/accordion'
 import productCard from './objects/product-card'
 
 import participant from './objects/participant'
+import commerceCollection from './documents/commerce-collection'
 
 /*  ------------------------------------------ */
 /*  Your Schema documents / modules / objects
@@ -97,7 +101,10 @@ export default createSchema({
     collectionGrid,
 
     /* ----------------------- */
-    /* 3: Generic Object types */
+    /* 3: Generic & Commerce Object types */
+    price,
+    commerceSeo,
+
     gridColumn,
     gridSize,
     seo,

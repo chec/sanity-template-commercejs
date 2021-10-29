@@ -3,16 +3,19 @@ import { Gift } from 'phosphor-react'
 
 import { getIcon } from './filter'
 
+/**
+ * @description A product in your commerce store.
+ */
 export default {
   name: 'product',
   title: 'Product',
   type: 'document',
-  __experimental_actions: ['update', 'publish', 'delete'], // disable for initial publish
+  // __experimental_actions: ['update', 'publish', 'delete'], // disable for initial publish
   fieldsets: [
     {
-      title: 'Shopify',
-      name: 'shopify',
-      description: 'Synced from Shopify',
+      title: 'Commerce',
+      name: 'commerce',
+      description: 'Synced from Chec/Commerce.js',
       options: { columns: 2, collapsible: true }
     },
     {
@@ -26,94 +29,94 @@ export default {
   icon: () => <Gift />,
   fields: [
     {
-      title: 'Product Title',
-      name: 'productTitle',
+      title: 'Product name',
+      name: 'productName',
       type: 'string',
       readOnly: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
     {
       title: 'Product ID',
       name: 'productID',
-      type: 'number',
+      type: 'string',
       readOnly: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
     {
-      title: 'Price (cents)',
+      title: 'Price',
       name: 'price',
       type: 'number',
       readOnly: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
-    {
-      title: 'Compare Price (cents)',
-      name: 'comparePrice',
-      type: 'number',
-      readOnly: true,
-      fieldset: 'shopify'
-    },
-    {
-      title: 'In Stock?',
-      name: 'inStock',
-      type: 'boolean',
-      readOnly: true,
-      fieldset: 'shopify'
-    },
-    {
-      title: 'Low Stock?',
-      name: 'lowStock',
-      type: 'boolean',
-      readOnly: true,
-      fieldset: 'shopify'
-    },
+    // {
+    //   title: 'Compare Price (cents)',
+    //   name: 'comparePrice',
+    //   type: 'number',
+    //   readOnly: true,
+    //   fieldset: 'commerce'
+    // },
+    // {
+    //   title: 'In Stock?',
+    //   name: 'inStock',
+    //   type: 'boolean',
+    //   readOnly: true,
+    //   fieldset: 'commerce'
+    // },
+    // {
+    //   title: 'Low Stock?',
+    //   name: 'lowStock',
+    //   type: 'boolean',
+    //   readOnly: true,
+    //   fieldset: 'commerce'
+    // },
     {
       title: 'SKU',
       name: 'sku',
       type: 'string',
       readOnly: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
     {
-      title: 'URL Slug',
+      title: 'slug',
       name: 'slug',
-      type: 'slug',
+      type: 'string',
       readOnly: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
+    // {
+    //   title: 'Options',
+    //   name: 'options',
+    //   type: 'array',
+    //   of: [{ type: 'productOption' }],
+    //   readOnly: true,
+    //   fieldset: 'commerce'
+    // },
+    // {
+    //   title: 'Draft Mode',
+    //   name: 'isDraft',
+    //   type: 'boolean',
+    //   readOnly: true,
+    //   hidden: true,
+    //   fieldset: 'commerce'
+    // },
     {
-      title: 'Options',
-      name: 'options',
-      type: 'array',
-      of: [{ type: 'productOption' }],
-      readOnly: true,
-      fieldset: 'shopify'
-    },
-    {
-      title: 'Draft Mode',
-      name: 'isDraft',
-      type: 'boolean',
-      readOnly: true,
-      hidden: true,
-      fieldset: 'shopify'
-    },
-    {
-      title: 'Deleted from Shopify?',
+      title: 'Deleted from commerce?',
       name: 'wasDeleted',
       type: 'boolean',
       readOnly: true,
       hidden: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
-    {
-      title: 'Display Title',
-      name: 'title',
-      type: 'string'
-    },
+    // {
+    //   title: 'Display Title',
+    //   name: 'title',
+    //   type: 'string'
+    // },
     {
       title: 'Description',
       name: 'description',
-      type: 'simplePortableText'
+      type: 'string'
     },
     {
       title: 'Gallery',

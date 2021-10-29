@@ -25,10 +25,10 @@ export async function getStaticPage(pageData, preview) {
     ${queries.site}
   }
   `
+  debugger;
+  const data = await getSanityClient(preview).fetch(query);
 
-  const data = await getSanityClient(preview).fetch(query)
-
-  return data
+  return data;
 }
 
 // Fetch a specific dynamic page with our global data
@@ -54,6 +54,63 @@ export async function getPage(slug, preview) {
   const data = await getSanityClient(preview).fetch(query)
 
   return data
+}
+
+/**
+ * Fetch a single product by its slug with our global data
+ * @
+ * @param {string} slug 
+ * @param {*} preview 
+ * @returns {object}
+ */
+ export async function getProduct(slug, preview) {
+  // Set up the query for getting a product
+  const query = `
+    {
+      "product": *[_type == "product" && slug.current == "${slug}"] {
+        hasTransparentHeader,
+        modules[] {
+          ${queries.modules}
+        },
+        "product": ${queries.product},
+        title,
+        seo
+      },
+      ${queries.site}
+    }
+  `
+
+  const data = await getSanityClient(preview).fetch(query);
+
+  return data;
+}
+
+/**
+ * Fetch a specific collection with our global data
+ * 
+ * @param {string} slug
+ * @param {*} preview
+ * @returns {object}
+ */
+export async function getCollection(slug, preview) {
+  // Set up the query for getting a collection
+  const query = `
+    {
+      "page": *[_type == "collection" && slug.current == "${slug}"] {
+      hasTransparentHeader,
+      modules[] {
+        ${queries.modules}
+      },
+      "collection": ${queries.collection},
+      title,
+      seo
+    },
+    ${queries.site}
+  `
+
+  const data = await getSanityClient(preview).fetch(query);
+
+  return data;
 }
 
 export { queries }

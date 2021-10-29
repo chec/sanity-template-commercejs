@@ -6,6 +6,11 @@ const Hero = dynamic(() => import('./hero'))
 const Marquee = dynamic(() => import('./marquee'))
 const DividerPhoto = dynamic(() => import('./divider-photo'))
 
+/**
+ * Module that can be added to a page document
+ * 
+ * @returns {React.Component}
+ */
 export const Module = ({ module }) => {
   const type = module._type
 

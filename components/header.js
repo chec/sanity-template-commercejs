@@ -24,7 +24,7 @@ const Header = ({ data = {}, isTransparent, onSetup = () => {} }) => {
     menuDesktopRight,
     menuMobilePrimary,
     menuMobileSecondary,
-  } = data
+  } = data || {};
 
   // setup states
   const [isMobileNavOpen, setMobileNavOpen] = useState(false)

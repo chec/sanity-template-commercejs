@@ -13,7 +13,7 @@ export default {
       type: 'string'
     },
     {
-      title: 'URL Slug',
+      title: 'Slug',
       name: 'slug',
       type: 'slug',
       description: '(required)',

@@ -6,7 +6,7 @@ import Menu from '@components/menu'
 import Icon from '@components/icon'
 
 const Footer = ({ data = {} }) => {
-  const { blocks } = data
+  const { blocks = [] } = data || {};
 
   return (
     <footer className="footer" role="contentinfo">
