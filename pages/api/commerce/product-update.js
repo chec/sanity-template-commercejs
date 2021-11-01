@@ -1,10 +1,6 @@
-import axios from 'axios';
 import sanityClient from '@sanity/client';
-import crypto from 'crypto';
 import { nanoid } from 'nanoid';
 const { verifyWebhook } = require('@chec/webhook-verifier');
-const getRawBody = require('raw-body');
-const jsondiffpatch = require('jsondiff');
 
 const sanity = sanityClient({
   dataset: process.env.SANITY_PROJECT_DATASET,

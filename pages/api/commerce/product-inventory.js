@@ -1,5 +1,3 @@
-
-import commerce from '@lib/commerce';
 import axios from 'axios';
 
 export default async function send(req, res) {

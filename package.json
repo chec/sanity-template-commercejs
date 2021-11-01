@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@chec/commerce.js": "^2.8.0",
+    "@chec/webhook-verifier": "^1.0.1",
     "@mailchimp/mailchimp_marketing": "^3.0.25",
     "@reach/rect": "^0.16.0",
     "@sanity/block-content-to-react": "^3.0.0",
