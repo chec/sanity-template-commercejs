@@ -58,6 +58,7 @@ export default async function send(req, res) {
     return;
   }
 
+  console.log('Webhook received:', req.body);
     // If it's a readiness probe, return a 204
   if (req.body.event === 'readiness_probe') {
     return {
@@ -206,12 +207,11 @@ export default async function send(req, res) {
   //   }
   // })
 
-  const result = stx.commit();
+  const result = await stx.commit();
 
   console.info('Sync complete!');
   console.log('Result', result);
 
   res.statusCode = 200;
   res.json(JSON.stringify(result));
-  })
 }
