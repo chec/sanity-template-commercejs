@@ -2,6 +2,7 @@ import sanityClient from '@sanity/client';
 import { nanoid } from 'nanoid';
 const { verifyWebhook } = require('@chec/webhook-verifier');
 
+// Initialize Sanity client
 const sanity = sanityClient({
   dataset: process.env.SANITY_PROJECT_DATASET,
   projectId: process.env.SANITY_PROJECT_ID,
@@ -10,26 +11,36 @@ const sanity = sanityClient({
   useCdn: false,
 });
 
-// Turn off defautl NextJS bodyParser to run own middleware
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
+// Chec webhook signing key from the Chec Dashboard webhooks setting page
+const signingKey = process.env.CHEC_WEBHOOK_SIGNING_KEY;
 
 export default async function send(req, res) {
-  // Chec if the request is a POST request
-  if (req.method !== 'POST') {
-    console.error('Must be a POST request with a product ID');
+  // Check if the request is a POST request
+  if (req.method !== 'POST' || req.method !== 'PUT') {
+    console.error('Must be a POST or PUT request with a product ID');
     return res.status(200).json({
-      error: 'Must be a POST request with a product ID',
+      error: 'Must be a POST or PUT request with a product ID',
     });
   }
 
-  // Call the Chec webhook verifier to verify webhook authenticity
-  verifyWebhook(req.body, process.env.CHEC_WEBHOOK_SIGNING_KEY);
+  // Handle request body chunking
+  const chunks = [];
+  req.on('data', chunk => chunks.push(chunk));
+  req.on('end', () => {
+    // Get the request body/payload
+    const data = JSON.parse(Buffer.concat(chunks));
 
-  // If it's a readiness probe, return a 204
+    try {
+      // Call the Chec webhook verifier to verify webhook authenticity
+      verifyWebhook(data, signingKey);
+    } catch (error) {
+      console.error('Signature verification failed:', error);
+      res.writeHead(500);
+      res.end();
+      return;
+    }
+
+    // If it's a readiness probe, return a 204
   if (req.body.event === 'readiness_probe') {
     return {
       statusCode: 204,
@@ -45,9 +56,7 @@ export default async function send(req, res) {
     variant_groups,
     permalink,
     inventory
-  } } = req;
-
-  console.info(`Sync triggered for product: ${name} (id: ${id})`);
+  } } = data;
 
   /*  ------------------------------ */
   /*  Construct our product objects
@@ -122,18 +131,6 @@ export default async function send(req, res) {
 
 
   /*  ------------------------------ */
-  /*  Check for previous sync
-  /*  ------------------------------ */
-
-  console.log('Checking for previous sync data...')
-
-  // Setup our Shopify connection
-  const shopifyConfig = {
-    'Content-Type': 'application/json',
-    'X-Authorization': process.env.NEXT_PUBLIC_CHEC_PUBLIC_KEY,
-  }
-
-  /*  ------------------------------ */
   /*  Begin Sanity Product Sync
   /*  ------------------------------ */
 
@@ -191,11 +188,12 @@ export default async function send(req, res) {
   //   }
   // })
 
-  const result = await stx.commit()
+  const result = await stx.commit();
 
-  console.info('Sync complete!')
-  console.log(result)
+  console.info('Sync complete!');
+  console.log('Result', result);
 
-  res.statusCode = 200
-  res.json(JSON.stringify(result))
+  res.statusCode = 200;
+  res.json(JSON.stringify(result));
+  })
 }

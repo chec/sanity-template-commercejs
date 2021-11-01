@@ -1,5 +1,5 @@
 <p align="center">
-<img src="public/HULL-Logo.svg" align="center" height="100" />
+<img src="public/stralar-logo.svg" align="center" height="100" />
 </p>
 <p align="center">
   <strong>Starter built on <a href="https://nextjs.org">Next.js</a></strong> 🤘 <br />
@@ -122,6 +122,16 @@ Once you hand off to the client you'll want to give them the ability to generate
 <br />
 
 # 🤘 Extras/Tips
+
+<details>
+<summary><strong>How are my Commerce products synced to Sanity?</strong></summary>
+
+Products get synced into Sanity through the following sequence:
+1. The `product update` webhook is triggered in your Chec merchant from a product being created or updated.
+2. If the webhook is setup correctly, it will send the product payload to your API endpoint `/api/commerce/product-update`
+3. The sync function at your API endpoint will do a few checks to see if there has been any changes to the product since the last sync, and if so, update the product in Sanity.
+
+**Note**: You must have the webhook notifications setup to a live URL and not localhost. All Chec ENV variables must also be added to the live hosting environment (e.g. Vercel). 
 
 <details>
 <summary><strong>This looks like a theme... How can I use this like a starter?</strong></summary>
