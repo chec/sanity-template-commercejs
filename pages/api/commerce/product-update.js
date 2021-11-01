@@ -11,6 +11,29 @@ const sanity = sanityClient({
   useCdn: false,
 });
 
+// Turn off default NextJS bodyParser, so we can run our own middleware
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+const runMiddleware = (req, res, fn) => {
+  new Promise((resolve) => {
+    if (!req.body) {
+      let buffer = '';
+      req.on('data', (chunk) => {
+        buffer += chunk;
+      });
+
+      req.on('end', () => {
+        resolve();
+        req.body = JSON.parse(Buffer.from(buffer).toString());
+      });
+    }
+  });
+}
+
 // Chec webhook signing key from the Chec Dashboard webhooks setting page
 const signingKey = process.env.CHEC_WEBHOOK_SIGNING_KEY;
 
@@ -23,22 +46,17 @@ export default async function send(req, res) {
     });
   }
 
-  // Handle request body chunking
-  const chunks = [];
-  req.on('data', chunk => chunks.push(chunk));
-  req.on('end', () => {
-    // Get the request body/payload
-    const data = JSON.parse(Buffer.concat(chunks));
+  await runMiddleware(req, res);
 
-    try {
-      // Call the Chec webhook verifier to verify webhook authenticity
-      verifyWebhook(data, signingKey);
-    } catch (error) {
-      console.error('Signature verification failed:', error);
-      res.writeHead(500);
-      res.end();
-      return;
-    }
+  try {
+    // Call the Chec webhook verifier to verify webhook authenticity
+    verifyWebhook(req.body, signingKey);
+  } catch (err) {
+    console.error('Signature verification failed:', error);
+    res.writeHead(500);
+    res.end();
+    return;
+  }
 
     // If it's a readiness probe, return a 204
   if (req.body.event === 'readiness_probe') {
@@ -56,7 +74,7 @@ export default async function send(req, res) {
     variant_groups,
     permalink,
     inventory
-  } } = data;
+  } } = req;
 
   /*  ------------------------------ */
   /*  Construct our product objects
@@ -188,7 +206,7 @@ export default async function send(req, res) {
   //   }
   // })
 
-  const result = await stx.commit();
+  const result = stx.commit();
 
   console.info('Sync complete!');
   console.log('Result', result);
