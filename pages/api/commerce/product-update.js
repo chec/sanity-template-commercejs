@@ -39,9 +39,9 @@ const signingKey = process.env.CHEC_WEBHOOK_SIGNING_KEY;
 
 export default async function send(req, res) {
   // Check if the request is a POST request
-  if (req.method !== 'POST' || req.method !== 'PUT') {
+  if (req.method !== 'POST' && req.method !== 'PUT') {
     console.error('Must be a POST or PUT request with a product ID');
-    return res.status(200).json({
+    return res.status(400).json({
       method: req.method,
       error: 'Must be a POST or PUT request with a product ID',
     });
