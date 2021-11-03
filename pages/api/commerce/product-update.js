@@ -52,11 +52,12 @@ export default async function send(req, res) {
   try {
     // Call the Chec webhook verifier to verify webhook authenticity
     verifyWebhook(req.body, signingKey);
-  } catch (err) {
+  } catch (error) {
     console.error('Signature verification failed:', error);
-    res.writeHead(500);
-    res.end();
-    return;
+    return res.status(500).json({
+      error,
+      body: req.body,
+    });
   }
 
   console.log('Webhook received:', req.body);
