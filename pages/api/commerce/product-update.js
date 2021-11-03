@@ -42,6 +42,7 @@ export default async function send(req, res) {
   if (req.method !== 'POST' || req.method !== 'PUT') {
     console.error('Must be a POST or PUT request with a product ID');
     return res.status(200).json({
+      method: req.method,
       error: 'Must be a POST or PUT request with a product ID',
     });
   }
@@ -59,13 +60,6 @@ export default async function send(req, res) {
   }
 
   console.log('Webhook received:', req.body);
-    // If it's a readiness probe, return a 204
-  if (req.body.event === 'readiness_probe') {
-    return {
-      statusCode: 204,
-      body: '',
-    }
-  }
 
   // Extract the Commerce data
   const { body: {

@@ -56,7 +56,7 @@ export const ptContent = `
 export const product = `
   {
     "publishDate": coalesce(publishDate, _createdAt),
-    "permalink": slug.current,
+    "slug": slug.current,
     "id": productID,
     title,
     price,

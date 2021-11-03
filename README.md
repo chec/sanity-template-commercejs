@@ -53,7 +53,7 @@
 
 # 💀 Set Up
 
-Clone this repository from your GitHub account with the [Use this template](https://github.com/ndimatteo/HULL/generate) button
+Clone this repository from your GitHub account with the [Use this template](https://github.com/chec/sanity-template-commercejs/generate) button
 
 ### 1) Sanity
 1. If you don't have the [Sanity CLI](https://www.sanity.io/docs/getting-started-with-sanity-cli) installed, first run `npm install -g @sanity/cli` to install it globally
