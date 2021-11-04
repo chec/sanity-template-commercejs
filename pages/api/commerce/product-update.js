@@ -1,5 +1,6 @@
 import sanityClient from '@sanity/client';
 import { nanoid } from 'nanoid';
+
 const { verifyWebhook } = require('@chec/webhook-verifier');
 
 // Initialize Sanity client
@@ -48,6 +49,23 @@ export default async function send(req, res) {
     });
   }
 
+  // Initiate Sanity transaction
+  let stx = sanity.transaction()
+
+  // Handle deleted products from Chec/Commerce.js
+  if (req.body.event === 'products.delete' && req.body.model_ids?.length > 0) {
+    stx.delete(`product-${req.body.model_ids[0]}`);
+    const result = await stx.commit();
+
+    console.info('Sync complete, product deleted!');
+    console.log('Result', result);
+
+    res.statusCode = 200;
+    res.json(JSON.stringify(result));
+    return;
+  }
+
+  // Handle products being created or updated
   // Extract the Commerce data from the webhook payload. The payloads are product responses.
   const { body: { payload: {
     id,
@@ -135,7 +153,6 @@ export default async function send(req, res) {
   /*  ------------------------------ */
 
   console.log('Writing product to Sanity...')
-  let stx = sanity.transaction()
 
   // create product if doesn't exist
   stx = stx.createIfNotExists(product)
@@ -147,9 +164,7 @@ export default async function send(req, res) {
   stx = stx.patch(`product-${id}`, (patch) => patch.set(productFields))
 
   // patch (update) title & slug if none has been set
-  stx = stx.patch(`product-${id}`, (patch) =>
-    patch.setIfMissing({ title: name })
-  )
+  stx = stx.patch(`product-${id}`, (patch) => patch.set({ title: name }))
 
   // patch (update) productHero module if none has been set
   stx = stx.patch(`product-${id}`, (patch) =>
