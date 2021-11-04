@@ -87,8 +87,8 @@ export default async function send(req, res) {
     slug: { current: permalink },
     // price: variants[0].price * 100,
     // sku: variants[0].sku || '',
-    inStock: (inventory.managed && inventory.available > 0) || true,
-    lowStock: (inventory.managed && inventory.available <= 4) || false,
+    inStock: (inventory?.managed && inventory.available > 0) || true,
+    lowStock: (inventory?.managed && inventory.available <= 4) || false,
     options: productOptions,
   };
 
