@@ -48,15 +48,15 @@ export default async function send(req, res) {
     });
   }
 
-  // Extract the Commerce data
-  const { body: {
+  // Extract the Commerce data from the webhook payload. The payloads are product responses.
+  const { body: { payload: {
     id,
     name,
     active,
     variant_groups,
     permalink,
     inventory
-  } } = req;
+  } } } = req;
 
   /*  ------------------------------ */
   /*  Construct our product objects
