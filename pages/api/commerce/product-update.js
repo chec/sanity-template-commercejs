@@ -38,8 +38,6 @@ export default async function send(req, res) {
   }
   req.body = JSON.parse(Buffer.concat(buffers).toString());
 
-  console.log(req.body);
-
   try {
     // Call the Chec webhook verifier to verify webhook authenticity
     verifyWebhook(req.body, signingKey);
@@ -72,7 +70,7 @@ export default async function send(req, res) {
 
   // Define product options if there is more than one variant group
   const productOptions =
-    variant_groups.length > 1
+    variant_groups?.length > 1
       ? variant_groups.map((option) => ({
         _key: option.id,
         _type: 'productOption',
