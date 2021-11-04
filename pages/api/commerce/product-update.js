@@ -18,22 +18,6 @@ export const config = {
   },
 };
 
-const runMiddleware = (req, res, fn) => {
-  new Promise((resolve) => {
-    if (!req.body) {
-      let buffer = '';
-      req.on('data', (chunk) => {
-        buffer += chunk;
-      });
-
-      req.on('end', () => {
-        resolve();
-        req.body = JSON.parse(Buffer.from(buffer).toString());
-      });
-    }
-  });
-}
-
 // Chec webhook signing key from the Chec Dashboard webhooks setting page
 const signingKey = process.env.CHEC_WEBHOOK_SIGNING_KEY;
 
@@ -47,7 +31,14 @@ export default async function send(req, res) {
     });
   }
 
-  await runMiddleware(req, res);
+  // Convert request stream into a readable JSON body
+  const buffers = [];
+  for await (const chunk of req) {
+      buffers.push(chunk);
+  }
+  req.body = JSON.parse(Buffer.concat(buffers).toString());
+
+  console.log(req.body);
 
   try {
     // Call the Chec webhook verifier to verify webhook authenticity
@@ -55,12 +46,9 @@ export default async function send(req, res) {
   } catch (error) {
     console.error('Signature verification failed:', error);
     return res.status(500).json({
-      error,
-      body: req.body,
+      error: 'Failed to verify webhook signature in payload.',
     });
   }
-
-  console.log('Webhook received:', req.body);
 
   // Extract the Commerce data
   const { body: {
@@ -83,7 +71,7 @@ export default async function send(req, res) {
   }
 
   // Define product options if there is more than one variant group
-  const productOptions = 
+  const productOptions =
     variant_groups.length > 1
       ? variant_groups.map((option) => ({
         _key: option.id,
