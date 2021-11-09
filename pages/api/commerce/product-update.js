@@ -1,7 +1,6 @@
 import sanityClient from '@sanity/client';
 import { nanoid } from 'nanoid';
-
-const { verifyWebhook } = require('@chec/webhook-verifier');
+import { verifyWebhook } from '@chec/webhook-verifier';
 
 // Initialize Sanity client
 const sanity = sanityClient({
@@ -25,7 +24,7 @@ const signingKey = process.env.CHEC_WEBHOOK_SIGNING_KEY;
 export default async function send(req, res) {
   // Check if the request is a POST, PUT, DELETE request
   // These are coming from the registered events in the webhook
-  if (req.method !== 'POST' && req.method !== 'PUT' && req.method !== 'DELETE') {
+  if (!['POST', 'PUT', 'DELETE'].includes(req.method)) {
     console.error('Must be a POST or PUT request with a product ID');
     return res.status(400).json({
       method: req.method,
@@ -103,9 +102,10 @@ export default async function send(req, res) {
   /*  ------------------------------ */
 
   // Define product objects
+  const modelId = `product-${id}`;
   const product = {
     _type: 'product',
-    _id: `product-${id}`,
+    _id: modelId,
   }
 
   // Define product options if there is more than one variant group
@@ -147,7 +147,7 @@ export default async function send(req, res) {
   const productVariantFields = variants
     .sort((a, b) => (a.id > b.id ? 1 : -1))
     .map((variant) => ({
-      isActive: status === 'active' ? true : false,
+      isActive: status === 'active',
       wasDeleted: false,
       productName: title,
       productID: id,
@@ -185,18 +185,18 @@ export default async function send(req, res) {
   sanityTransaction = sanityTransaction.createIfNotExists(product)
 
   // Unset options field first, to avoid patch set issues
-  sanityTransaction = sanityTransaction.patch(`product-${id}`, (patch) => patch.unset(['productOptions']))
+  sanityTransaction = sanityTransaction.patch(modelId, (patch) => patch.unset(['productOptions']))
 
   // Patch (update) product document with core commerce data
-  sanityTransaction = sanityTransaction.patch(`product-${id}`, (patch) => patch.set(productFields))
+  sanityTransaction = sanityTransaction.patch(modelId, (patch) => patch.set(productFields))
 
   // Patch (update) title & slug if none has been set
-  sanityTransaction = sanityTransaction.patch(`product-${id}`, (patch) =>
+  sanityTransaction = sanityTransaction.patch(modelId, (patch) =>
     patch.setIfMissing({ title: name })
   )
 
   // patch (update) productHero module if none has been set
-  sanityTransaction = sanityTransaction.patch(`product-${id}`, (patch) =>
+  sanityTransaction = sanityTransaction.patch(modelId, (patch) =>
     patch.setIfMissing({
       modules: [
         {

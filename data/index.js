@@ -86,22 +86,22 @@ export async function getPage(slug, preview) {
 }
 
 /**
- * Fetch a specific collection with our global data
+ * Fetch a specific category with our global data
  *
  * @param {string} slug
  * @param {*} preview
  * @returns {object}
  */
-export async function getCollection(slug, preview) {
-  // Set up the query for getting a collection
+export async function getCategory(slug, preview) {
+  // Set up the query for getting a category
   const query = `
     {
-      "page": *[_type == "collection" && slug.current == "${slug}"] {
+      "page": *[_type == "category" && slug.current == "${slug}"] {
       hasTransparentHeader,
       modules[] {
         ${queries.modules}
       },
-      "collection": ${queries.collection},
+      "category": ${queries.category},
       title,
       seo
     },

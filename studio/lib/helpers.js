@@ -49,7 +49,7 @@ export const getStaticRoute = name => {
 
 export const getDynamicRoute = name => {
   switch (name) {
-    case 'collection':
+    case 'category':
       return 'shop'
     case 'product':
       return 'products'

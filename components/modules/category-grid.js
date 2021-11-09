@@ -12,13 +12,13 @@ import {
 
 import { useSiteContext } from '@lib/context'
 
-import CollectionFilter from '@components/collection-filter'
-import CollectionFilterChips from '@components/collection-filter-chips'
-import CollectionSort from '@components/collection-sort'
+import CategoryFilter from '@components/category-filter'
+import CategoryFilterChips from '@components/category-filter-chips'
+import CategorySort from '@components/category-sort'
 import ProductCard from '@components/product-card'
 import BlockContent from '@components/block-content'
 
-const Collection = ({ data = {} }) => {
+const Category = ({ data = {} }) => {
   const { title, products, filter, sort, paginationLimit, noFilterResults } =
     data
 
@@ -26,7 +26,7 @@ const Collection = ({ data = {} }) => {
 
   const { isPageTransition } = useSiteContext()
 
-  const collectionItems = useRef([])
+  const categoryItems = useRef([])
 
   const [hasPagination, setHasPagination] = useState(
     paginationLimit > 0 && products.length > paginationLimit
@@ -139,7 +139,7 @@ const Collection = ({ data = {} }) => {
 
     if (newCount) {
       setCurrentCount(newCount)
-      collectionItems.current[pageProductIndex]?.querySelector('[href]').focus({
+      categoryItems.current[pageProductIndex]?.querySelector('[href]').focus({
         preventScroll: true,
       })
     }
@@ -150,14 +150,14 @@ const Collection = ({ data = {} }) => {
     orderedProducts,
     activeParams,
     paginationLimit,
-    collectionItems,
+    categoryItems,
   ])
 
   return (
-    <section className="collection">
-      <div className="collection--tools">
+    <section className="category">
+      <div className="category--tools">
         {filter?.isActive && (
-          <CollectionFilter
+          <CategoryFilter
             filterGroups={filterGroups}
             activeFilters={activeFilters}
             filtersTotal={filtersTotal}
@@ -167,7 +167,7 @@ const Collection = ({ data = {} }) => {
         )}
 
         {sort?.isActive && (
-          <CollectionSort
+          <CategorySort
             sortOptions={sort.options}
             activeSort={activeSort}
             onChange={updateParams}
@@ -176,8 +176,8 @@ const Collection = ({ data = {} }) => {
       </div>
 
       {filter?.isActive && (
-        <CollectionFilterChips
-          id="collection-filter-chips"
+        <CategoryFilterChips
+          id="category-filter-chips"
           filterGroups={filterGroups}
           activeFilters={activeFilters}
           filtersTotal={filtersTotal}
@@ -185,15 +185,15 @@ const Collection = ({ data = {} }) => {
         />
       )}
 
-      <div className="collection--content">
+      <div className="category--content">
         <div
-          className={cx('collection--grid', {
+          className={cx('category--grid', {
             'is-empty': !orderedProducts.length,
           })}
         >
           {paginatedProducts.map((product, key) => (
             <ProductCard
-              ref={(node) => (collectionItems.current[key] = node)}
+              ref={(node) => (categoryItems.current[key] = node)}
               key={
                 product.id +
                 activeParams
@@ -216,7 +216,7 @@ const Collection = ({ data = {} }) => {
           ))}
 
           {orderedProducts.length === 0 && (
-            <div className="collection--empty">
+            <div className="category--empty">
               {noFilterResults && <BlockContent blocks={noFilterResults} />}
               <button
                 className="filters-reset btn is-large"
@@ -236,19 +236,19 @@ const Collection = ({ data = {} }) => {
         </div>
 
         {hasPagination && (
-          <div className="collection--pagination">
+          <div className="category--pagination">
             <button className="btn is-large" onClick={loadMore}>
               Load More
               <span className="sr-only">
                 {' '}
-                products from the "{title}" collection
+                products from the "{title}" category
               </span>
             </button>
           </div>
         )}
 
         {orderedProducts?.length > 0 && (
-          <div className="collection--count">
+          <div className="category--count">
             <p aria-live="polite" role="status" aria-atomic="true">
               Showing {paginatedProducts.length} of {orderedProducts.length}{' '}
               products
@@ -299,4 +299,4 @@ const useFilterAndSort = (products, filters, sort) => {
   }
 }
 
-export default Collection
+export default Category

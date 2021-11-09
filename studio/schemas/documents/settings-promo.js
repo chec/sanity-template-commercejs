@@ -40,7 +40,7 @@ export default {
       title: 'Link',
       name: 'link',
       type: 'reference',
-      to: [{ type: 'page' }, { type: 'collection' }, { type: 'product' }],
+      to: [{ type: 'page' }, { type: 'category' }, { type: 'product' }],
       description: '(optional) Select a page to link the promo banner to',
       hidden: ({ parent }) => !parent.enabled
     }

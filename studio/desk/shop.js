@@ -5,21 +5,21 @@ import { Copy, Gift, Sliders, ShoppingCart } from 'phosphor-react'
 
 import { standardViews } from './previews/standard'
 
-const collectionsMenu = S.listItem()
-  .title('Collections')
-  .schemaType('collection')
+const categoriesMenu = S.listItem()
+  .title('Categories')
+  .schemaType('category')
   .child(
-    S.documentTypeList('collection')
-      .title('Collections')
+    S.documentTypeList('category')
+      .title('Categories')
       .filter(
-        `_type == "collection" && !(_id in [
+        `_type == "category" && !(_id in [
       *[_type == "generalSettings"][0].shop._ref,
     ]) && !(_id in path("drafts.**"))`
       )
       .child(documentId =>
         S.document()
           .documentId(documentId)
-          .schemaType('collection')
+          .schemaType('category')
           .views(standardViews)
       )
   )
@@ -116,7 +116,7 @@ export const shopMenu = S.listItem()
         productsMenu,
         productVariantsMenu,
         S.divider(),
-        collectionsMenu,
+        categoriesMenu,
         filtersMenu
       ])
   )

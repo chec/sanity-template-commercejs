@@ -22,7 +22,7 @@ export default {
       title: 'Product Cards',
       name: 'cards',
       description:
-        'Define how this product should appear on collection pages and the cart',
+        'Define how this product should appear on category pages and the cart',
       options: { columns: 2 }
     }
   ],
@@ -202,7 +202,7 @@ export default {
       name: 'useGallery',
       type: 'string',
       description:
-        'Display an inline gallery instead of thumbnails for this product on Collection pages',
+        'Display an inline gallery instead of thumbnails for this product on category pages',
       options: {
         list: [
           { title: 'Yes', value: 'true' },
@@ -216,7 +216,7 @@ export default {
       name: 'surfaceOption',
       type: 'string',
       description:
-        'Surface one of the product options for this product on Collection pages',
+        'Surface one of the product options for this product on category pages',
       options: {
         list: [{ title: 'None', value: '' }],
         fromField: 'options',
@@ -312,7 +312,7 @@ export default {
       wasDeleted = false,
       title,
       productName,
-      slug = {},
+      slug = null,
       cartPhotos
     }) {
       const path = `/products/${slug}`

@@ -79,7 +79,7 @@ const currentShopPage = S.listItem()
       return S.component(() => (
         <EmptyNotice
           title="Shop Page"
-          type="collection"
+          type="category"
           link="settings;general"
           linkTitle="General Settings"
         />
@@ -87,7 +87,7 @@ const currentShopPage = S.listItem()
 
     return S.document()
       .id(data.shop._id)
-      .schemaType('collection')
+      .schemaType('category')
       .views(standardViews)
   })
 

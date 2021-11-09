@@ -2,25 +2,39 @@ import React from 'react'
 import { SquaresFour } from 'phosphor-react'
 
 export default {
-  title: 'Collection',
-  name: 'collection',
+  title: 'Category',
+  name: 'category',
   type: 'document',
   icon: () => <SquaresFour />,
   fields: [
     {
       name: 'title',
       title: 'Title',
-      type: 'string'
+      type: 'string',
+      readOnly: true,
     },
     {
       title: 'Slug',
       name: 'slug',
-      type: 'slug',
+      type: 'string',
       description: '(required)',
       options: {
         source: 'title',
         maxLength: 96
-      }
+      },
+      readOnly: true,
+    },
+    {
+      title: 'Description',
+      name: 'description',
+      type: 'string',
+      readOnly: true,
+    },
+    {
+      title: 'Category ID',
+      name: 'categoryID',
+      type: 'string',
+      readOnly: true,
     },
     {
       title: 'Overlay header with transparency?',
@@ -35,7 +49,7 @@ export default {
       name: 'modules',
       type: 'array',
       of: [
-        { type: 'collectionGrid' },
+        { type: 'categoryGrid' },
         { type: 'grid' },
         { type: 'hero' },
         { type: 'marquee' },
@@ -43,24 +57,24 @@ export default {
       ],
       validation: Rule =>
         Rule.custom(blocks => {
-          const collectionGrids =
-            blocks?.filter(block => block._type === 'collectionGrid') || []
+          const categoryGrids =
+            blocks?.filter(block => block._type === 'categoryGrid') || []
 
-          const collectionGridItems = collectionGrids.map(
+          const categoryGridItems = categoryGrids.map(
             (item, index) => [{ _key: item._key }] || [index]
           )
 
-          return collectionGrids.length === 1
+          return categoryGrids.length === 1
             ? true
             : {
                 message:
-                  'You must have one "Collection Grid" module on the page',
-                paths: collectionGridItems
+                  'You must have one "Category grid" module on the page',
+                paths: categoryGridItems
               }
         })
     },
     {
-      title: 'Products Grid',
+      title: 'Products grid',
       name: 'products',
       type: 'array',
       of: [
@@ -97,11 +111,11 @@ export default {
       title: 'title',
       slug: 'slug'
     },
-    prepare({ title = 'Untitled', slug = {} }) {
-      const path = `/shop/${slug.current}`
+    prepare({ title = 'Untitled', slug = null }) {
+      const path = `/shop/${slug}`
       return {
         title,
-        subtitle: slug.current ? path : '(missing slug)'
+        subtitle: slug ? path : '(missing slug)'
       }
     }
   }

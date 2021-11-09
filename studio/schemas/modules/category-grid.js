@@ -1,13 +1,13 @@
 import { SquaresFour } from 'phosphor-react'
 
 export default {
-  title: 'Collection Grid',
-  name: 'collectionGrid',
+  title: 'Category grid',
+  name: 'categoryGrid',
   type: 'object',
   icon: SquaresFour,
   fields: [
     {
-      title: 'Display Collection Grid?',
+      title: 'Display category grid?',
       name: 'active',
       type: 'boolean',
       initialValue: true
@@ -16,8 +16,8 @@ export default {
   preview: {
     prepare() {
       return {
-        title: 'Collection Grid',
-        subtitle: 'Displays the Collections’s associated products'
+        title: 'Category grid',
+        subtitle: 'Displays the category’s associated products'
       }
     }
   }
