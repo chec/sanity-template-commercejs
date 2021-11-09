@@ -12,11 +12,6 @@ export default {
       type: 'string'
     },
     {
-      title: 'Position',
-      name: 'position',
-      type: 'number'
-    },
-    {
       title: 'Values',
       name: 'values',
       type: 'array',

@@ -10,13 +10,13 @@ export default {
   name: 'product',
   title: 'Product',
   type: 'document',
-  // __experimental_actions: ['update', 'publish', 'delete'], // disable for initial publish
+  __experimental_actions: ['update', 'publish', 'delete'], // disable for initial publish
   fieldsets: [
     {
       title: 'Commerce',
       name: 'commerce',
-      description: 'Synced from Chec/Commerce.js',
-      options: { columns: 2, collapsible: true }
+      description: 'Product data synced from Chec/Commerce.js',
+      options: { columns: 2, collapsible: false }
     },
     {
       title: 'Product Cards',
@@ -26,7 +26,6 @@ export default {
       options: { columns: 2 }
     }
   ],
-  icon: () => <Gift />,
   fields: [
     {
       title: 'Product name',
@@ -45,7 +44,7 @@ export default {
     {
       title: 'Price',
       name: 'price',
-      type: 'number',
+      type: 'string',
       readOnly: true,
       fieldset: 'commerce'
     },
@@ -56,20 +55,31 @@ export default {
     //   readOnly: true,
     //   fieldset: 'commerce'
     // },
-    // {
-    //   title: 'In Stock?',
-    //   name: 'inStock',
-    //   type: 'boolean',
-    //   readOnly: true,
-    //   fieldset: 'commerce'
-    // },
-    // {
-    //   title: 'Low Stock?',
-    //   name: 'lowStock',
-    //   type: 'boolean',
-    //   readOnly: true,
-    //   fieldset: 'commerce'
-    // },
+    {
+      title: 'Active mode',
+      name: 'isActive',
+      type: 'boolean',
+      readOnly: true,
+      description: 'Is the product is active?',
+      // hidden: true,
+      fieldset: 'commerce'
+    },
+    {
+      title: 'In stock?',
+      name: 'inStock',
+      type: 'boolean',
+      description: 'Is the product is in stock or has an inventory quantity?',
+      readOnly: true,
+      fieldset: 'commerce'
+    },
+    {
+      title: 'Low Stock?',
+      name: 'lowStock',
+      type: 'boolean',
+      description: 'Is the product at the low stock threshold of quantity 5?',
+      readOnly: true,
+      fieldset: 'commerce'
+    },
     {
       title: 'SKU',
       name: 'sku',
@@ -78,28 +88,27 @@ export default {
       fieldset: 'commerce'
     },
     {
-      title: 'slug',
+      title: 'Slug',
       name: 'slug',
       type: 'string',
       readOnly: true,
       fieldset: 'commerce'
     },
-    // {
-    //   title: 'Options',
-    //   name: 'options',
-    //   type: 'array',
-    //   of: [{ type: 'productOption' }],
-    //   readOnly: true,
-    //   fieldset: 'commerce'
-    // },
-    // {
-    //   title: 'Draft Mode',
-    //   name: 'isDraft',
-    //   type: 'boolean',
-    //   readOnly: true,
-    //   hidden: true,
-    //   fieldset: 'commerce'
-    // },
+    {
+      title: 'Description',
+      name: 'description',
+      type: 'string',
+      readOnly: true,
+      fieldset: 'commerce',
+    },
+    {
+      title: 'Variant groups',
+      name: 'options',
+      type: 'array',
+      of: [{ type: 'productOption' }],
+      readOnly: true,
+      fieldset: 'commerce'
+    },
     {
       title: 'Deleted from commerce?',
       name: 'wasDeleted',
@@ -108,14 +117,9 @@ export default {
       hidden: true,
       fieldset: 'commerce'
     },
-    // {
-    //   title: 'Display Title',
-    //   name: 'title',
-    //   type: 'string'
-    // },
     {
-      title: 'Description',
-      name: 'description',
+      title: 'Display Title',
+      name: 'title',
       type: 'string'
     },
     {
@@ -295,30 +299,30 @@ export default {
   },
   preview: {
     select: {
-      isDraft: 'isDraft',
+      isActive: 'isActive',
       wasDeleted: 'wasDeleted',
       title: 'title',
-      productTitle: 'productTitle',
+      productName: 'productName',
       slug: 'slug',
       cartPhotos: 'cartPhotos',
       listingPhoto: 'listingPhoto'
     },
     prepare({
-      isDraft = false,
+      isActive = true,
       wasDeleted = false,
       title,
-      productTitle,
+      productName,
       slug = {},
       cartPhotos
     }) {
-      const path = `/products/${slug.current}`
+      const path = `/products/${slug}`
       return {
         title:
-          (title ? title : productTitle) +
+          (title ? title : productName) +
           (wasDeleted ? ' (removed)' : '') +
-          (isDraft ? ' (draft)' : ''),
+          (isActive ? ' (active)' : ''),
         media: cartPhotos?.length ? cartPhotos[0].cartPhoto : null,
-        subtitle: slug.current ? path : '(missing slug)'
+        subtitle: slug ? path : '(missing slug)'
       }
     }
   }

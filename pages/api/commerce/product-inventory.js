@@ -30,7 +30,6 @@ export default async function send(req, res) {
     method: 'GET',
     headers: commerceConfig,
   }).then ((response) => {
-    debugger;
     return response.data;
   }).catch(() => null );
 
@@ -40,6 +39,32 @@ export default async function send(req, res) {
       error: 'Product not found',
     })
   }
+
+  // Get product variants from Commerce (separate endpoint)
+  const variants = await axios({
+    url: `https://${process.env.CHEC_API_URL}/v1/products/${id}/variants`,
+    method: 'GET',
+    headers: commerceConfig,
+  }).then ((response) => {
+    return response.data;
+  }).catch(() => null );
+
+  console.log('Variants from the product inventory API handler', variants);
+
+  // Construct the product object
+  const product = {
+    inStock: variants.some((variant) => variant.inventory > 0 || variant.inventory === null),
+    // Low stock threshold is set to 10
+    lowStock: variants.reduce(
+      (acc, variant) => acc + (variant.inventory || 0), 0) <= 5,
+    variants: variants.map((variant) => ({
+      id: variant.id,
+      inStock: variant.inventory && variant.inventory > 0 || variant.inventory === null,
+      lowStock: variant.inventory && variant.inventory <= 5 || variant.inventory === null,
+    })),
+  }
+
+  console.log('Product object with variants details', product);
 
   res.statusCode = 200;
   res.json(product);

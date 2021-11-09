@@ -92,7 +92,7 @@ export const product = `
       forOption,
       "color": color->color,
     },
-    "variants": *[_type == "productVariant" && productID == ^.productID && wasDeleted != true && isDraft != true]{
+    "variants": *[_type == "productVariant" && productID == ^.productID && wasDeleted != true && isActive = true]{
       "id": variantID,
       title,
       price,

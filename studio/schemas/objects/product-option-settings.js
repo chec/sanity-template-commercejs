@@ -15,8 +15,8 @@ export default {
       type: 'string',
       options: {
         list: [{ title: 'All', value: '' }],
-        fromField: 'options',
-        fromSubField: 'values',
+        fromField: 'groups',
+        fromSubField: 'options',
         fromFieldData: {
           title: 'name',
           value: 'position'

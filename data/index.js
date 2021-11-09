@@ -4,7 +4,7 @@ import * as queries from './queries'
 // Fetch all dynamic docs
 export async function getAllDocSlugs(doc) {
   const data = await getSanityClient().fetch(
-    `*[_type == "${doc}" && !(_id in [${queries.homeID}, ${queries.shopID}, ${queries.errorID}]) && wasDeleted != true && isDraft != true]{ "slug": slug.current }`
+    `*[_type == "${doc}" && !(_id in [${queries.homeID}, ${queries.shopID}, ${queries.errorID}]) && wasDeleted != true]{ "slug": slug.current }`
   )
   return data
 }
@@ -59,8 +59,8 @@ export async function getPage(slug, preview) {
 /**
  * Fetch a single product by its slug with our global data
  * @
- * @param {string} slug 
- * @param {*} preview 
+ * @param {string} slug
+ * @param {*} preview
  * @returns {object}
  */
  export async function getProduct(slug, preview) {
@@ -87,7 +87,7 @@ export async function getPage(slug, preview) {
 
 /**
  * Fetch a specific collection with our global data
- * 
+ *
  * @param {string} slug
  * @param {*} preview
  * @returns {object}

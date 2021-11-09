@@ -8,12 +8,12 @@ export default {
   name: 'productVariant',
   title: 'Variant',
   type: 'document',
-  __experimental_actions: ['update', 'publish', 'delete'], // disable for initial publish
+  // _experimental_actions: ['update', 'publish', 'delete'], // disable for initial publish
   fieldsets: [
     {
-      title: 'Shopify',
-      name: 'shopify',
-      description: 'Synced from Shopify',
+      title: 'Commerce',
+      name: 'commerce',
+      description: 'Synced from commerce',
       options: { columns: 2, collapsible: true }
     },
     {
@@ -25,67 +25,67 @@ export default {
   icon: () => <Copy />,
   fields: [
     {
-      name: 'productTitle',
-      title: 'Product Title',
+      name: 'productName',
+      title: 'Product name',
       type: 'string',
       readOnly: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
     {
-      name: 'variantTitle',
-      title: 'Variant Title',
+      name: 'variantName',
+      title: 'Variant name',
       type: 'string',
       readOnly: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
     {
       name: 'productID',
       title: 'Product ID',
       type: 'number',
       readOnly: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
     {
       name: 'variantID',
       title: 'Variant ID',
       type: 'number',
       readOnly: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
     {
       name: 'price',
       title: 'Price (cents)',
       type: 'number',
       readOnly: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
     {
       name: 'comparePrice',
       title: 'Compare Price (cents)',
       type: 'number',
       readOnly: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
     {
       name: 'inStock',
       title: 'In Stock?',
       type: 'boolean',
       readOnly: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
     {
       name: 'lowStock',
       title: 'Low Stock?',
       type: 'boolean',
       readOnly: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
     {
       name: 'sku',
       title: 'SKU',
       type: 'string',
       readOnly: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
     {
       title: 'Options',
@@ -93,23 +93,23 @@ export default {
       type: 'array',
       of: [{ type: 'productOptionValue' }],
       readOnly: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
     {
-      title: 'Draft Mode',
-      name: 'isDraft',
+      title: 'Active mode',
+      name: 'isActive',
       type: 'boolean',
       readOnly: true,
       hidden: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
     {
       name: 'wasDeleted',
-      title: 'Deleted from Shopify?',
+      title: 'Deleted from commerce?',
       type: 'boolean',
       readOnly: true,
       hidden: true,
-      fieldset: 'shopify'
+      fieldset: 'commerce'
     },
     {
       title: 'Display Title',
@@ -126,32 +126,32 @@ export default {
   ],
   preview: {
     select: {
-      isDraft: 'isDraft',
+      isActive: 'isActive',
       wasDeleted: 'wasDeleted',
       title: 'title',
-      variantTitle: 'variantTitle',
-      productTitle: 'productTitle'
+      variantName: 'variantName',
+      productName: 'productName'
     },
     prepare({
-      isDraft = false,
+      isActive = false,
       wasDeleted = false,
       title,
-      variantTitle,
-      productTitle = '(missing product)'
+      variantName,
+      productName = '(missing product)'
     }) {
       const getSubtitle = () => {
         if (title) {
-          return title === variantTitle ? null : `(${variantTitle})`
+          return title === variantName ? null : `(${variantName})`
         } else {
-          return productTitle
+          return productName
         }
       }
 
       return {
         title:
-          (title ? title : variantTitle) +
+          (title ? title : variantName) +
           (wasDeleted ? ' (removed)' : '') +
-          (isDraft ? ' (draft)' : ''),
+          (isActive ? ' (active)' : ''),
         subtitle: getSubtitle()
       }
     }
