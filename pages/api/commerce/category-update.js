@@ -63,7 +63,7 @@ export default async function send(req, res) {
   }
 
   // Handle categories being created or updated
-  // Extract the Commerce data from the webhook payload. The payloads are product responses.
+  // Extract the Commerce data from the webhook payload. The payloads are category responses.
   const { body: { payload: {
     id,
     name,
@@ -72,7 +72,7 @@ export default async function send(req, res) {
   } } } = req;
 
   /*  ------------------------------ */
-  /*  Construct our product objects
+  /*  Construct our category objects
   /*  ------------------------------ */
 
   // Define category objects
