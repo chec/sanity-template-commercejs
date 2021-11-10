@@ -37,12 +37,27 @@ export default async function send(req, res) {
   }
   req.body = JSON.parse(Buffer.concat(buffers).toString());
 
+  // Check that the handled events are supported
+  if (!['categories.create', 'categories.update', 'categories.delete', 'test.webhook'].includes(req.body.event)) {
+    return res.status(422).json({
+      method: req.method,
+      error: 'The provided webhook event is not supported.',
+    });
+  }
+
   try {
     // Call the Chec webhook verifier helper to verify webhook authenticity
     verifyWebhook(req.body, signingKey);
   } catch (error) {
     return res.status(500).json({
       error: 'Failed to verify webhook signature in payload.',
+    });
+  }
+
+  // Handle test webhook events
+  if (req.body.event === 'test.webhook') {
+    return res.status(200).json({
+      message: 'Test webhook event received!',
     });
   }
 
@@ -55,11 +70,7 @@ export default async function send(req, res) {
     const result = await sanityTransaction.commit();
 
     console.info('Sync complete, category deleted!');
-    console.log('Result', result);
-
-    res.statusCode = 200;
-    res.json(JSON.stringify(result));
-    return;
+    return res.status(200).json(result);
   }
 
   // Handle categories being created or updated
