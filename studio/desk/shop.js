@@ -38,60 +38,6 @@ const productsMenu = S.listItem()
       )
   )
 
-const productVariantsMenu = S.listItem()
-  .title('Product Variants')
-  .icon(Copy)
-  .child(
-    S.list()
-      .title('Product Variants')
-      .items([
-        S.listItem()
-          .title('By Product')
-          .icon(Gift)
-          .child(
-            S.documentTypeList('product')
-              .title('By Product')
-              .menuItems(S.documentTypeList('product').getMenuItems())
-              .filter('_type == $type')
-              .params({ type: 'product' })
-              .child(productID =>
-                S.documentList()
-                  .title('Variants')
-                  .menuItems(
-                    S.documentTypeList('productVariant').getMenuItems()
-                  )
-                  .filter('_type == $type && productID == $id')
-                  .params({
-                    type: 'productVariant',
-                    id: Number(productID.replace('product-', ''))
-                  })
-                  .child(documentId =>
-                    S.document()
-                      .documentId(documentId)
-                      .schemaType('productVariant')
-                      .views(standardViews)
-                  )
-              )
-          ),
-        S.listItem()
-          .title('Unattached Variants')
-          .icon(Copy)
-          .child(async () => {
-            const productIDs = await sanityClient.fetch(`
-          *[_type == "product"][].productID
-        `)
-
-            return S.documentTypeList('productVariant')
-              .title('Unattached Variants')
-              .filter('_type == $type && !(productID in $ids)')
-              .params({
-                type: 'productVariant',
-                ids: productIDs
-              })
-          })
-      ])
-  )
-
 const filtersMenu = S.listItem()
   .title('Filters')
   .icon(Sliders)
@@ -114,7 +60,6 @@ export const shopMenu = S.listItem()
       .title('Shop')
       .items([
         productsMenu,
-        productVariantsMenu,
         S.divider(),
         categoriesMenu,
         filtersMenu

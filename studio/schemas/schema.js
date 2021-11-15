@@ -4,7 +4,6 @@ import schemaTypes from 'all:part:@sanity/base/schema-type'
 // Document types
 import page from './documents/page'
 import product from './documents/commerce-product'
-import productVariant from './documents/commerce-variant'
 import category from './documents/commerce-category'
 import filter from './documents/filter'
 import solidColor from './documents/color'
@@ -74,7 +73,6 @@ export default createSchema({
     /* 1: Document types */
     page,
     product,
-    productVariant,
     category,
     filter,
     solidColor,
