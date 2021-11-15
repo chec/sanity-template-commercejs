@@ -5,10 +5,11 @@ import cx from 'classnames'
 
 import { hasObject } from '@lib/helpers'
 
+import ProductPrice from '@components/product/product-price';
+
 import {
   ProductGallery,
   ProductThumbnail,
-  ProductPrice,
   ProductOption,
   ProductAdd,
 } from '@components/product'
@@ -156,14 +157,9 @@ const ProductCard = React.forwardRef(
               </Link>
             </h2>
 
-            {showPrice && product.comparePrice && (
+            {showPrice && (
               <ProductPrice
                 price={activeVariant ? activeVariant.price : product.price}
-                comparePrice={
-                  activeVariant
-                    ? activeVariant.comparePrice
-                    : product.comparePrice
-                }
               />
             )}
           </div>
