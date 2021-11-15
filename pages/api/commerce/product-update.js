@@ -137,7 +137,7 @@ export default async function send(req, res) {
     productName: name,
     productID: id,
     price: price,
-    description: description,
+    description: description.toString(),
     slug: permalink,
     // price: variants[0].price * 100,
     sku: sku,
