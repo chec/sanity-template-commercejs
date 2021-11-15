@@ -25,7 +25,7 @@ export default {
     select: {
       title: 'title',
       pageType: 'page._type',
-      pageSlug: 'page.slug.current'
+      pageSlug: 'page.slug'
     },
     prepare({ title, pageType, pageSlug }) {
       const isStatic = getStaticRoute(pageType)

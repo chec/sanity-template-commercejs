@@ -53,7 +53,7 @@ export default {
                 isUnique: (slug, context) => {
                   const otherGroupSlugs = context.document.filter.groups
                     .filter(g => g._key !== context.parent._key)
-                    .map(g => g.slug.current)
+                    .map(g => g.slug)
 
                   return ![...otherGroupSlugs, 'sort'].includes(slug)
                 },

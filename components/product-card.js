@@ -119,7 +119,7 @@ const ProductCard = React.forwardRef(
             )}
 
             {/* Show Thumbnail */}
-            {showThumbs && (
+            {showThumbs && product?.photos.length && (
               <div className="product-card--thumb">
                 <ProductThumbnail
                   thumbnails={product.photos.listing}
@@ -129,7 +129,7 @@ const ProductCard = React.forwardRef(
             )}
 
             {/* Quick Add */}
-            {showQuickAdd && activeVariant.inStock && (
+            {showQuickAdd && activeVariant?.inStock && (
               <div className="product-card--add is-inverted">
                 <ProductAdd
                   productID={activeVariant.id}
@@ -156,7 +156,7 @@ const ProductCard = React.forwardRef(
               </Link>
             </h2>
 
-            {showPrice && (
+            {showPrice && product.comparePrice && (
               <ProductPrice
                 price={activeVariant ? activeVariant.price : product.price}
                 comparePrice={
