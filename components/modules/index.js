@@ -17,7 +17,7 @@ export const Module = ({
   product,
   activeVariant,
   onVariantChange,
-  collectionProducts,
+  categoryProducts,
 }) => {
   const type = module._type
 
@@ -30,11 +30,11 @@ export const Module = ({
       return <Marquee index={index} data={module} />
     case 'dividerPhoto':
       return <DividerPhoto index={index} data={module} />
-    case 'collectionGrid':
+    case 'categoryGrid':
       return (
-        <Collection
+        <Category
           index={index}
-          data={{ ...module, products: collectionProducts }}
+          data={{ ...module, products: categoryProducts }}
         />
       )
     default:

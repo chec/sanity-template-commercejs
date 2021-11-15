@@ -47,7 +47,7 @@ export default {
                 type: 'reference',
                 to: [
                   { type: 'page' },
-                  { type: 'collection' },
+                  { type: 'category' },
                   { type: 'product' }
                 ],
                 hidden: ({ parent }) => parent.linkType !== 'internal'

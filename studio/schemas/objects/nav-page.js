@@ -18,14 +18,14 @@ export default {
       title: 'Page',
       name: 'page',
       type: 'reference',
-      to: [{ type: 'page' }, { type: 'collection' }, { type: 'product' }]
+      to: [{ type: 'page' }, { type: 'category' }, { type: 'product' }]
     }
   ],
   preview: {
     select: {
       title: 'title',
       pageType: 'page._type',
-      pageSlug: 'page.slug.current'
+      pageSlug: 'page.slug'
     },
     prepare({ title, pageType, pageSlug }) {
       const isStatic = getStaticRoute(pageType)

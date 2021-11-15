@@ -17,10 +17,10 @@ export default {
       title: 'Shop Page',
       name: 'shop',
       type: 'reference',
-      to: [{ type: 'collection' }],
+      to: [{ type: 'category' }],
       description: (
         <>
-          This collection will show at: <code>/shop</code>
+          This category will show at: <code>/shop</code>
         </>
       )
     },

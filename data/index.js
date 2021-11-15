@@ -4,7 +4,7 @@ import * as queries from './queries'
 // Fetch all dynamic docs
 export async function getAllDocSlugs(doc) {
   const data = await getSanityClient().fetch(
-    `*[_type == "${doc}" && !(_id in [${queries.homeID}, ${queries.shopID}, ${queries.errorID}]) && wasDeleted != true]{ "slug": slug.current }`
+    `*[_type == "${doc}" && !(_id in [${queries.homeID}, ${queries.shopID}, ${queries.errorID}]) && wasDeleted != true && isDraft != true]{ slug }`
   )
   return data
 }
@@ -25,10 +25,10 @@ export async function getStaticPage(pageData, preview) {
     ${queries.site}
   }
   `
-  debugger;
-  const data = await getSanityClient(preview).fetch(query);
 
-  return data;
+  const data = await getSanityClient(preview).fetch(query)
+
+  return data
 }
 
 // Fetch a specific dynamic page with our global data
@@ -37,9 +37,9 @@ export async function getPage(slug, preview) {
 
   const query = `
     {
-      "page": *[_type == "page" && slug.current in ${JSON.stringify(
-        slugs
-      )}] | order(_updatedAt desc)[0]{
+      "page": *[_type == "page" && slug in ${JSON.stringify(
+    slugs
+  )}] | order(_updatedAt desc)[0]{
         hasTransparentHeader,
         modules[]{
           ${queries.modules}
@@ -56,20 +56,13 @@ export async function getPage(slug, preview) {
   return data
 }
 
-/**
- * Fetch a single product by its slug with our global data
- * @
- * @param {string} slug
- * @param {*} preview
- * @returns {object}
- */
- export async function getProduct(slug, preview) {
-  // Set up the query for getting a product
+// Fetch a specific product with our global data
+export async function getProduct(slug, preview) {
   const query = `
     {
-      "product": *[_type == "product" && slug.current == "${slug}"] {
+      "page": *[_type == "product" && slug == "${slug}" && wasDeleted != true && isDraft != true] | order(_updatedAt desc)[0]{
         hasTransparentHeader,
-        modules[] {
+        modules[]{
           ${queries.modules}
         },
         "product": ${queries.product},
@@ -80,37 +73,33 @@ export async function getPage(slug, preview) {
     }
   `
 
-  const data = await getSanityClient(preview).fetch(query);
+  const data = await getSanityClient(preview).fetch(query)
 
-  return data;
+  return data
 }
 
-/**
- * Fetch a specific collection with our global data
- *
- * @param {string} slug
- * @param {*} preview
- * @returns {object}
- */
-export async function getCollection(slug, preview) {
-  // Set up the query for getting a collection
+// Fetch a specific category with our global data
+export async function getCategory(slug, preview) {
   const query = `
     {
-      "page": *[_type == "collection" && slug.current == "${slug}"] {
-      hasTransparentHeader,
-      modules[] {
-        ${queries.modules}
+      "page": *[_type == "category" && slug == "${slug}"] | order(_updatedAt desc)[0]{
+        hasTransparentHeader,
+        modules[]{
+          ${queries.modules}
+        },
+        products[wasDeleted != true && isDraft != true${
+    preview?.active ? ' && _id in path("drafts.**")' : ''
+  }]->${queries.product},
+        title,
+        seo
       },
-      "collection": ${queries.collection},
-      title,
-      seo
-    },
-    ${queries.site}
+      ${queries.site}
+    }
   `
 
-  const data = await getSanityClient(preview).fetch(query);
+  const data = await getSanityClient(preview).fetch(query)
 
-  return data;
+  return data
 }
 
 export { queries }

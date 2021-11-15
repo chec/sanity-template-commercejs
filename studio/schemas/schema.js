@@ -5,7 +5,7 @@ import schemaTypes from 'all:part:@sanity/base/schema-type'
 import page from './documents/page'
 import product from './documents/commerce-product'
 import productVariant from './documents/commerce-variant'
-import collection from './documents/commerce-collection'
+import category from './documents/commerce-category'
 import filter from './documents/filter'
 import solidColor from './documents/color'
 
@@ -26,7 +26,7 @@ import marquee from './modules/marquee'
 import dividerPhoto from './modules/divider-photo'
 import newsletter from './modules/newsletter'
 import productHero from './modules/product-hero'
-import collectionGrid from './modules/collection-grid'
+import categoryGrid from './modules/category-grid'
 
 // Object types
 import price from './objects/commerce-product-price'
@@ -61,7 +61,6 @@ import accordion from './objects/accordion'
 import productCard from './objects/product-card'
 
 import participant from './objects/participant'
-import commerceCollection from './documents/commerce-collection'
 
 /*  ------------------------------------------ */
 /*  Your Schema documents / modules / objects
@@ -76,7 +75,7 @@ export default createSchema({
     page,
     product,
     productVariant,
-    collection,
+    category,
     filter,
     solidColor,
 
@@ -98,7 +97,7 @@ export default createSchema({
     dividerPhoto,
     newsletter,
     productHero,
-    collectionGrid,
+    categoryGrid,
 
     /* ----------------------- */
     /* 3: Generic & Commerce Object types */

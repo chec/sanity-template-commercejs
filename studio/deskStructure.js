@@ -10,7 +10,7 @@ const hiddenDocTypes = listItem =>
     'page',
     'product',
     'productVariant',
-    'collection',
+    'category',
     'filter',
     'solidColor',
 

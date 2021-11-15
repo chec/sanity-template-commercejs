@@ -5,10 +5,11 @@ import cx from 'classnames'
 
 import { hasObject } from '@lib/helpers'
 
+import ProductPrice from '@components/product/product-price';
+
 import {
   ProductGallery,
   ProductThumbnail,
-  ProductPrice,
   ProductOption,
   ProductAdd,
 } from '@components/product'
@@ -119,7 +120,7 @@ const ProductCard = React.forwardRef(
             )}
 
             {/* Show Thumbnail */}
-            {showThumbs && (
+            {showThumbs && product?.photos.length && (
               <div className="product-card--thumb">
                 <ProductThumbnail
                   thumbnails={product.photos.listing}
@@ -129,7 +130,7 @@ const ProductCard = React.forwardRef(
             )}
 
             {/* Quick Add */}
-            {showQuickAdd && activeVariant.inStock && (
+            {showQuickAdd && activeVariant?.inStock && (
               <div className="product-card--add is-inverted">
                 <ProductAdd
                   productID={activeVariant.id}
@@ -159,11 +160,6 @@ const ProductCard = React.forwardRef(
             {showPrice && (
               <ProductPrice
                 price={activeVariant ? activeVariant.price : product.price}
-                comparePrice={
-                  activeVariant
-                    ? activeVariant.comparePrice
-                    : product.comparePrice
-                }
               />
             )}
           </div>

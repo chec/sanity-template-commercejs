@@ -1,12 +1,21 @@
+import { sortTypes } from '../studio/schemas/objects/shop-sort'
+
+// Create our sorting fallback titles from Sanity
+const sortFallbacks = sortTypes
+  .map((type) => `type == "${type.value}" => "${type.title}"`)
+  .join(',')
+
 // Construct our "home" and "error" page GROQ
 export const homeID = `*[_type=="generalSettings"][0].home->_id`
+export const shopID = `*[_type=="generalSettings"][0].shop->_id`
 export const errorID = `*[_type=="generalSettings"][0].error->_id`
 
 // Construct our "page" GROQ
 const page = `
   "type": _type,
-  "slug": slug.current,
-  "isHome": _id == ${homeID}
+  slug,
+  "isHome": _id == ${homeID},
+  "isShop": _id == ${shopID}
 `
 
 // Construct our "link" GROQ
@@ -22,7 +31,7 @@ const link = `
 
 // Construct our "image meta" GROQ
 export const imageMeta = `
-  "alt": coalesce(alt, asset->alt),
+  "alt": coalesce(alt, asset->altText),
   asset,
   crop,
   customRatio,
@@ -56,7 +65,7 @@ export const ptContent = `
 export const product = `
   {
     "publishDate": coalesce(publishDate, _createdAt),
-    "slug": slug.current,
+    slug,
     "id": productID,
     title,
     price,
@@ -92,7 +101,7 @@ export const product = `
       forOption,
       "color": color->color,
     },
-    "variants": *[_type == "productVariant" && productID == ^.productID && wasDeleted != true && isActive = true]{
+    "variants": *[_type == "productVariant" && productID == ^.productID && wasDeleted != true && isDraft != true]{
       "id": variantID,
       title,
       price,
@@ -108,7 +117,7 @@ export const product = `
     },
     "klaviyoAccountID": *[_type == "generalSettings"][0].klaviyoAccountID,
     "filters": filters[]{
-      "slug": filter->slug.current,
+      "slug": filter->slug,
       forOption
     }
   }
@@ -135,6 +144,11 @@ export const blocks = `
         ${ptContent}
       }
     }
+  },
+  _type == 'productCard' => {
+    _type,
+    _key,
+    product->${product}
   }
 `
 
@@ -191,6 +205,11 @@ export const modules = `
         "photo": {
           ${imageMeta}
         }
+      },
+      _type == 'product' => {
+        _type,
+        _id,
+        "product": *[_type == "product" && _id == ^ ._ref][0]${product}
       }
     },
     speed,
@@ -203,6 +222,43 @@ export const modules = `
     photo{
       ${imageMeta}
     }
+  },
+  _type == 'productHero' => {
+    _type,
+    _key,
+  },
+  _type == 'categoryGrid' => {
+    _type,
+    _key,
+    "title": ^.title,
+    "paginationLimit": *[_type == "shopSettings"][0].paginationLimit,
+    "filter": *[_type == "shopSettings"][0].filter{
+      isActive,
+      groups[]{
+        "id": _key,
+        title,
+        slug,
+        display,
+        options[]->{
+          type,
+          title,
+          slug,
+          "color": color->color
+        }
+      }
+    },
+    "sort": *[_type == "shopSettings"][0].sort{
+      isActive,
+      options[]{
+        "slug": type,
+        "title": coalesce(title, select(
+          ${sortFallbacks}
+        ))
+      }
+    },
+    "noFilterResults": *[_type == "shopSettings"][0].noFilterResults[]{
+      ${ptContent}
+    },
   }
 `
 
@@ -211,10 +267,18 @@ export const site = `
   "site": {
     "title": *[_type == "generalSettings"][0].siteTitle,
     "rootDomain": *[_type == "generalSettings"][0].siteURL,
+    "shop": *[_type == "shopSettings"][0]{
+      storeURL,
+      cartMessage
+    },
+    "productCounts": [ {"slug": "all", "count": count(*[_type == "product"])} ] + *[_type == "category"]{
+      slug,
+      "count": count(products)
+    },
     "cookieConsent": *[_type == "cookieSettings"][0]{
       enabled,
       message,
-      "link": link->{"type": _type, "slug": slug.current}
+      "link": link->{"type": _type, slug}
     },
     "header": *[_type == "headerSettings"][0]{
       "promo": *[_type == "promoSettings"][0]{
@@ -230,7 +294,8 @@ export const site = `
           ${link},
           dropdownItems[]{
             ${link}
-          }
+          },
+          featured[]->${product}
         }
       },
       menuDesktopRight->{
@@ -238,7 +303,8 @@ export const site = `
           ${link},
           dropdownItems[]{
             ${link}
-          }
+          },
+          featured[]->${product}
         }
       },
       menuMobilePrimary->{
@@ -276,7 +342,7 @@ export const site = `
               ${ptContent}
             }
           }
-        },
+        }
         {
           "title": blockTitle2,
           "menu": blockMenu2->{
@@ -314,4 +380,11 @@ export const site = `
     },
     "gtmID": *[_type == "generalSettings"][0].gtmID,
   }
+`
+
+// All Products
+export const allProducts = (preview) => `
+  *[_type == "product" && wasDeleted != true && isDraft != true${
+  preview?.active ? ' && _id in path("drafts.**")' : ''
+}]${product} | order(title asc)
 `

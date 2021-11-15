@@ -49,7 +49,7 @@ export const getStaticRoute = name => {
 
 export const getDynamicRoute = name => {
   switch (name) {
-    case 'collection':
+    case 'category':
       return 'shop'
     case 'product':
       return 'products'
@@ -79,7 +79,7 @@ export const assemblePageUrl = ({ document, options }) => {
     return ''
   }
 
-  return previewURL + (slug ? `/${slug.current}` : '')
+  return previewURL + (slug ? `/${slug}` : '')
 }
 
 export const decodeAssetUrl = id => {
