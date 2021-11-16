@@ -1,5 +1,7 @@
 import sanityClient from '@sanity/client';
 import { verifyWebhook } from '@chec/webhook-verifier';
+import { nanoid } from 'nanoid';
+import commerce from '../../../lib/commerce';
 
 // Initialize Sanity client
 const sanity = sanityClient({
@@ -82,6 +84,36 @@ export default async function send(req, res) {
     slug,
   } } } = req;
 
+  // Fetch a list of products for this category from Commerce.js, so we can create the "products grid"
+  let products = [];
+  if (commerce) {
+    const categoryProducts = await commerce.products.list({
+      category_id: [id],
+      limit: 200,
+    });
+
+    // Get the IDs from the Commerce.js response
+    const categoryProductIds = (categoryProducts.data || []).map((product) => product.id);
+
+    // Fetch the products by ID from Sanity, to ensure they exist before using them
+    const sanityProducts = await sanity.getDocuments(
+      categoryProductIds.map((categoryProductId) => `product-${categoryProductId}`),
+    );
+
+    // Filter out any products that were undefined from the lookup above and map into a Sanity reference
+    products = sanityProducts
+      .filter((sanityProduct) => sanityProduct)
+      .map((sanityProduct) => {
+        if (sanityProduct) {
+          return {
+            _key: nanoid(),
+            _ref: sanityProduct._id,
+            _type: 'reference',
+          };
+        }
+      });
+  }
+
   /*  ------------------------------ */
   /*  Construct our category objects
   /*  ------------------------------ */
@@ -99,6 +131,7 @@ export default async function send(req, res) {
     categoryID: id,
     slug,
     description: description || '',
+    products,
   };
 
   /*  ------------------------------ */
@@ -111,6 +144,9 @@ export default async function send(req, res) {
 
   // Create category if doesn't exist
   sanityTransaction = sanityTransaction.createIfNotExists(category)
+
+  // Unset product <> category association field first, to avoid patch set issues
+  sanityTransaction = sanityTransaction.patch(modelId, (patch) => patch.unset(['products']))
 
   // Patch (update) category document with core commerce data
   sanityTransaction = sanityTransaction.patch(modelId, (patch) => patch.set(categoryFields))
