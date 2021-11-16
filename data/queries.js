@@ -101,20 +101,6 @@ export const product = `
       forOption,
       "color": color->color,
     },
-    "variants": *[_type == "productVariant" && productID == ^.productID && wasDeleted != true && isDraft != true]{
-      "id": variantID,
-      title,
-      price,
-      comparePrice,
-      inStock,
-      lowStock,
-      options[]{
-        name,
-        position,
-        value
-      },
-      seo
-    },
     "klaviyoAccountID": *[_type == "generalSettings"][0].klaviyoAccountID,
     "filters": filters[]{
       "slug": filter->slug,

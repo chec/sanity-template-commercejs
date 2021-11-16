@@ -26,7 +26,7 @@ const singletons = [
   'seoSettings'
 ]
 
-const editAndDelete = ['product', 'productVariant']
+const editAndDelete = ['product']
 
 const previews = ['page', 'product', 'category']
 

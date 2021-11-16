@@ -9,7 +9,6 @@ const hiddenDocTypes = listItem =>
   ![
     'page',
     'product',
-    'productVariant',
     'category',
     'filter',
     'solidColor',
