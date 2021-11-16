@@ -98,7 +98,7 @@ export default async function send(req, res) {
     title: name,
     categoryID: id,
     slug,
-    description: description.toString(),
+    description: description || '',
   };
 
   /*  ------------------------------ */
