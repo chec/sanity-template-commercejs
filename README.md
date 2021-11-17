@@ -87,8 +87,8 @@ Go to the [developer webhooks page and add the following webhooks](https://dashb
 [!Products add webhook details](https://i.ibb.co/HqR7ZTr/products-webhooks.png)
 
 2. Categories:
-  - Add the events `products.create`, `products.update`, `products.delete`
-  - Enter in the your Vercel URL (see note below) - `https://[subdomain].vercel.app/api/commerce/product-update`
+  - Add the events `categories.create`, `categories.update`, `categories.delete`
+  - Enter in the your Vercel URL (see note below) - `https://[subdomain].vercel.app/api/commerce/category-update`
   - Make note of the signing key as you will need this into the environment variables in the below NextJS and deployment
     steps.
 
@@ -121,7 +121,8 @@ storefront.
   - Variants - at least one group with one option
   - Custom permalink (in the SEO section at the bottom of the product page)
   - Categories - assign the product to one or more categories
-    ### 3) NextJS
+
+### 3) NextJS
 1. `npm install` in the project root folder on local
 2. Create an `.env.local` file in the project folder, and add the following variables:
 ```
