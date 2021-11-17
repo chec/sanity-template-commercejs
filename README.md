@@ -9,8 +9,8 @@
 
 <p align="center">
   <a href="#-features">Features</a> •
-  <a href="#-set-up">Set Up</a> •
-  <a href="#-spin-up">Spin Up</a> •
+  <a href="#-set-up">Set up</a> •
+  <a href="#-spin-up">Spin up</a> •
     <a href="#-deployment">Deployment</a> •
   <a href="#-extrastips">Extras</a>
 </p>
@@ -26,14 +26,14 @@
 - Automatic `Sitemap.xml` generation
 - Automatic `robots.txt` generation
 - Automatic 301 Redirects from Sanity
-- Live Preview content directly from Sanity
-- Modern Image component using Sanity's Hotspot, Crop, and automatic WEBP format
+- Live preview content directly from Sanity
+- Modern image component using Sanity's Hotspot, Crop, and automatic WEBP format
 - Modular page content for all pages, including dynamic grid layouts
-- Customizable Promotion Banner
-- Customizable Cookie Notice
+- Customizable promotion banner
+- Customizable cookie notice
 - SEO features:
    - Page-level SEO/Share settings with previews
-   - Fallback Global SEO/Share settings
+   - Fallback global SEO/Share settings
 
 <br />
 
@@ -48,7 +48,7 @@
 # 💀 Manual set up
 
 Clone this repository from your GitHub account with the [Use this
-template](https://github.com/chec/sanity-template-commercejs/generate) button
+template](https://github.com/chec/sanity-template-commercejs/generate) button.
 
 ### 1) Sanity
 1. If you don't have the [Sanity CLI](https://www.sanity.io/docs/getting-started-with-sanity-cli) installed, first run
@@ -78,26 +78,24 @@ products and categories endpoints in your Chec merchant account.
 
 Go to the [developer webhooks page and add the following webhooks](https://dashboard.chec.io/settings/webhooks/add):
 
-1. Products:
+1. **Products**:
   - Add the events `products.create`, `products.update`, `products.delete`
   - Enter in the your Vercel URL (see note below) - `https://[subdomain].vercel.app/api/commerce/product-update`
-  - Make note of the signing key as you will need this into the environment variables in the [below Next.js set up
-    steps]()
+  - Make note of the signing key as you will need this into the environment variables in the below [Next.js set up steps](#3-nextjs)
 
-[!Products add webhook details](https://i.ibb.co/HqR7ZTr/products-webhooks.png)
+![Products add webhook details](https://i.ibb.co/HqR7ZTr/products-webhooks.png)
 
 2. Categories:
   - Add the events `categories.create`, `categories.update`, `categories.delete`
   - Enter in the your Vercel URL (see note below) - `https://[subdomain].vercel.app/api/commerce/category-update`
-  - Make note of the signing key as you will need this into the environment variables in the below NextJS and deployment
-    steps.
+  - Make note of the signing key as you will need this into the environment variables in the below [Next.js set up steps](#3-nextjs)
 
-[!Categories add webhook details](https://i.ibb.co/1ZTsZJk/categories-webhooks.png)
+![Categories add webhook details](https://i.ibb.co/1ZTsZJk/categories-webhooks.png)
 
 Once you have added the webhooks for both products and categories and save them, you should see the following in your
 [webhooks list view](https://dashboard.chec.io/settings/webhooks).
 
-[!Webhooks list view](https://i.ibb.co/wwWv9Jr/webhooks-list.png)
+![Webhooks list view](https://i.ibb.co/wwWv9Jr/webhooks-list.png)
 
 > ⚠️ **Note** <br />You have to use a real domain name (no localhost). Be sure to use your Vercel project URL during
 > development, and then switch to the production domain once live. You may not know your Vercel project URL until you
@@ -199,34 +197,35 @@ plugin](https://github.com/ndimatteo/sanity-plugin-vercel-deploy).
 <summary><strong>How are my Commerce products synced to Sanity?</strong></summary>
 
 Products get synced into Sanity through the following sequence:
-1. The `product update` webhook is triggered in your Chec merchant from a product being created or updated.
-2. If the webhook is setup correctly, it will send the product payload to your API endpoint
-   `/api/commerce/product-update`
-3. The sync function at your API endpoint will then update the product in Sanity.
+1. The products and categories webhooks are triggered in your Chec merchant from a product or category being created or updated.
+2. If the [webhooks are setup correctly](#2-chec-webhooks), it will send the product and category payloads to the API endpoints
+   `/api/commerce/product-update` and `/api/commerce/category-update` respectively.
+3. The sync function at your API endpoint will then update the product and category in Sanity.
 
 **Note**: You must have the webhook notifications setup to a live URL and not localhost. All Chec ENV variables must
 also be added to the live hosting environment (e.g. Vercel).
+</details>
 
 <details>
-<summary><strong>What are my next steps?</strong></summary>
+<summary><strong>Is this a starter template?</strong></summary>
 
-While this starter is relatively opinionated, the goal was three-fold:
+This template is a starter that was bootstrapped off of the [HULL template](https://github.com/ndimatteo/HULL), injected with Commerce.js products and categories data. While this version of the project only contains the pre-checkout data from Commerce.js, it is a great starting point for you to include the already integrated cart actions and build out a checkout form.
+
+The rest of the front end is rather opinionated and includes all the components you would need to flesh out additional pages, modules, and features. The decision that went into making this template (referenced from HULL author) was to achieve these goals:
+
 1. Use high-quality packages that don't get in the way
 2. Solve common UX problems and complex logic so you can focus on the fun stuff
-3. Create a more approachable starter for anyone looking to build production-ready headless experiences
+3. Create a more approachable starter for anyone looking to build headless experiences with a CMS and commerce backend
 
-That being said, I understand this means a lot of what's included is **very opinionated**. However, you'll find that at
-it's core the structure and naming conventions lend itself to really making it your own.
-
-I've purposefully used extracted component classes, not only for cleaner file structure, but also so you can easily work
+Extracted component classes have been created not only for cleaner file structure, but also so you can easily work
 in your own styles exclusively within the styles folder. Feel free to extend or outright remove the applied styles for
-all of the components!
+all of the components.
 </details>
 
 <details>
 <summary><strong>How do I build out my front end using the Sanity studio?</strong></summary>
 
-This starter template is injected with a lot of features for frontend display, you will just need to add the modules you
+This starter template is injected with a lot of features for front end display, you will just need to add the modules you
 need in your Sanity studio. Once you have your studio spun up, you can start by going under:
   - The Pages tab to create the 'Home Page', 'Shop All Page', 'Error Page', and 'Other Pages'.
   - The Shop tab to fill in the Sanity content fields such as Gallery, Product Card, and other additional page modules.
@@ -236,7 +235,7 @@ need in your Sanity studio. Once you have your studio spun up, you can start by 
 </details>
 
 <details>
-<summary><strong>What's up with the CSS? What are extracted component classes and why should I use them?</strong></summary>
+<summary><strong>What are extracted component classes and why should I use them?</strong></summary>
 
 While utility-first CSS definitely speeds up your dev time, it can become overwhelming and untenable. This can make it
 difficult to understand what a component is doing when shrouded in dozens of utility classes, especially for developers
@@ -261,7 +260,6 @@ login` to fix.
 <details>
 <summary><strong>How do I properly hand-off a Vercel project to the client?</strong></summary>
 
-While not as easy as Netlify, what I prefer to do is:
 1. Have the client create their own [Vercel account](https://vercel.com/signup)
 2. At the time of writing, Github connections can only be connected to one Vercel account at a time, so have the client
    [create a Github account](https://github.com/join) if they don't already have one, and transfer the project repo to
@@ -282,6 +280,6 @@ files.
 <br />
 
 # 💯 Credits
-This template was bootstrapped from the HULL project built by  [@ndimatteo](https://github.com/ndimatteo)
+This template was bootstrapped from the HULL project built by [@ndimatteo](https://github.com/ndimatteo)
 
 <br />
