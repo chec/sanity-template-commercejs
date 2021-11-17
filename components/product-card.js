@@ -1,15 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { m } from 'framer-motion'
 import Link from 'next/link'
 import cx from 'classnames'
 
-import { hasObject } from '@lib/helpers'
-
-import ProductPrice from '@components/product/product-price';
-
 import {
   ProductGallery,
   ProductThumbnail,
+  ProductPrice,
   ProductOption,
   ProductAdd,
 } from '@components/product'
@@ -41,62 +38,12 @@ const ProductCard = React.forwardRef(
       showPrice,
       showOption,
       showQuickAdd,
-      activeFilters,
       className,
       onClick,
     },
     ref
   ) => {
     if (!product) return null
-
-    const activeFilterValues =
-      activeFilters?.flatMap((f) =>
-        f.values.map((v) => ({
-          name: f.name,
-          value: v,
-        }))
-      ) || []
-
-    // select the default variant based current active filters
-    const defaultOption = activeFilterValues
-      .map((filter) => {
-        const currentFilter = product.filters.find(
-          (f) => f.slug === filter.value && f.forOption
-        )
-
-        if (!currentFilter) return null
-
-        const option = currentFilter.forOption.split(':')
-
-        return {
-          name: option[0],
-          value: option[1],
-        }
-      })
-      .filter(Boolean)
-
-    // find default variant for product
-    const defaultVariant = product.variants?.find((v) => {
-      const currentOption = defaultOption?.length
-        ? defaultOption[defaultOption.length - 1]
-        : {
-            name: product.options[0]?.name,
-            value: product.options[0]?.values[0],
-          }
-
-      return hasObject(v.options, currentOption)
-    })
-
-    // set active variant as default
-    const [activeVariant, setActiveVariant] = useState(
-      defaultVariant ? defaultVariant : product.variants[0]
-    )
-
-    // assign the new variant when options are changed
-    const changeActiveVariant = (id) => {
-      const newActiveVariant = product.variants.find((v) => v.id === id)
-      setActiveVariant(newActiveVariant)
-    }
 
     return (
       <m.div
@@ -111,7 +58,6 @@ const ProductCard = React.forwardRef(
               <div className="product-card--gallery">
                 <ProductGallery
                   photosets={product.photos.main}
-                  activeVariant={activeVariant}
                   hasArrows
                   hasDots
                   hasDrag={false}
@@ -120,20 +66,19 @@ const ProductCard = React.forwardRef(
             )}
 
             {/* Show Thumbnail */}
-            {showThumbs && product?.photos.length && (
+            {showThumbs && (
               <div className="product-card--thumb">
                 <ProductThumbnail
                   thumbnails={product.photos.listing}
-                  activeVariant={activeVariant}
                 />
               </div>
             )}
 
             {/* Quick Add */}
-            {showQuickAdd && activeVariant?.inStock && (
+            {showQuickAdd && (
               <div className="product-card--add is-inverted">
                 <ProductAdd
-                  productID={activeVariant.id}
+                  productID={product.id}
                   className="btn is-white is-large"
                 />
               </div>
@@ -145,10 +90,7 @@ const ProductCard = React.forwardRef(
           <div className="product-card--header">
             <h2 className="product-card--title">
               <Link
-                href={`/products/${
-                  product.slug +
-                  (product.surfaceOption ? `?variant=${activeVariant.id}` : '')
-                }`}
+                href={`/products/${product.slug}`}
                 scroll={false}
               >
                 <a className="product-card--link" onClick={onClick}>
@@ -159,7 +101,8 @@ const ProductCard = React.forwardRef(
 
             {showPrice && (
               <ProductPrice
-                price={activeVariant ? activeVariant.price : product.price}
+                price={product.price}
+                comparePrice={product.comparePrice}
               />
             )}
           </div>
@@ -176,8 +119,6 @@ const ProductCard = React.forwardRef(
                       position={key}
                       option={option}
                       optionSettings={product.optionSettings}
-                      variants={product.variants}
-                      activeVariant={activeVariant}
                       strictMatch={false}
                       hideLabels
                       onChange={changeActiveVariant}

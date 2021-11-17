@@ -4,7 +4,7 @@ import Accordion from '@components/accordion'
 import Chip from '@components/chip'
 import Icon from '@components/icon'
 
-const CollectionFilterChips = ({
+const CategoryFilterChips = ({
   id,
   filterGroups,
   activeFilters,

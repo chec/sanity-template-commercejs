@@ -15,7 +15,7 @@ const CategoryPage = ({ data }) => {
           key={key}
           index={key}
           module={module}
-          collectionProducts={page.products}
+          categoryProducts={page.products}
         />
       ))}
     </Layout>
@@ -23,27 +23,27 @@ const CategoryPage = ({ data }) => {
 }
 
 export async function getStaticProps({ params, preview, previewData }) {
-  const collectionData = await getCategory(params.slug, {
+  const categoryData = await getCategory(params.slug, {
     active: preview,
     token: previewData?.token,
   })
 
   return {
     props: {
-      data: collectionData,
+      data: categoryData,
     },
   }
 }
 
 export async function getStaticPaths() {
-  const allCategorys = await getAllDocSlugs('collection')
+  const allCategorys = await getAllDocSlugs('category')
 
   return {
     paths:
-      allCategorys?.map((collection) => {
+      allCategorys?.map((category) => {
         return {
           params: {
-            slug: collection.slug,
+            slug: category.slug,
           },
         }
       }) || [],

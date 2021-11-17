@@ -4,8 +4,6 @@ import useSWR from 'swr'
 import axios from 'axios';
 
 import { getProduct, getAllDocSlugs } from '@data';
-import { useParams,  usePrevious, centsToPrice, hasObject } from '@lib/helpers';
-import { useSiteContext } from '@lib/context';
 
 import NotFoundPage from '@pages/404';
 import Layout from '@components/layout';
@@ -17,14 +15,14 @@ const fetchInventory = (url, id) =>
       params: {
         id: id,
       },
-    }).then((res) => res.data)
+    }).then((res) => res.data);
 
 const Product = ({ data }) => {
   const router = useRouter();
 
   // Return NotFoundPage if no product is found
   if (!router.isFallback && !data) {
-    return <NotFoundPage statusCode={404} />;
+    return <NotFoundPage statucsCode={404} />;
   }
 
   // Extract site and page from the product data
@@ -32,56 +30,6 @@ const Product = ({ data }) => {
 
   // Set the product state
   const [product, setProduct] = useState(page.product);
-
-  // Find the default variant for this product by matching against the first product option
-  const defaultVariant = page.product.variants?.find((variant) => {
-    const option = {
-      name: page.product.variant_groups?.[0].name,
-      option: page.product.variant_groups?.[0].options[0].name,
-    }
-    return hasObject(variant.options, option);
-  });
-
-  const defaultVariantID = defaultVariant.id ?? page.product.variants[0].id;
-
-  // Set up our variant URL params
-  const [currentParams, setCurrentParams] = useParams([
-    {
-      name: 'variant',
-      option: defaultVariantID,
-    }
-  ]);
-
-  const previousParams = usePrevious(currentParams)
-
-  // determine which params set to use
-  const activeParams =
-    isPageTransition && previousParams ? previousParams : currentParams
-
-  // Find our activeVariantID ID
-  const paramVariantID = activeParams.find(
-    (filter) => filter.name === 'variant'
-  ).option
-  const foundVariant = page.product.variants?.find(
-    (variant) => variant.id == paramVariantID
-  )
-  const activeVariantID = foundVariant ? paramVariantID : defaultVariantID
-
-  // handle variant change
-  const updateVariant = useCallback(
-    (id) => {
-      const isValidVariant = page.product.variants.find((v) => v.id == id)
-
-      setCurrentParams([
-        ...activeParams,
-        {
-          name: 'variant',
-          value: isValidVariant ? `${id}` : defaultVariantID,
-        },
-      ])
-    },
-    [activeParams]
-  )
 
   // Check our product inventory
   const { data: productInventory } = useSWR(
@@ -96,14 +44,6 @@ const Product = ({ data }) => {
         ...page.product,
         inStock: productInventory.inStock,
         lowStock: productInventory.lowStock,
-        variants: [
-          ...page.product.variants.map((variant) => {
-            const newInventory = productInventory.variants.find(
-              (inventory) => inventory.id === variant.id,
-            )
-            return newInventory ? { ...variant, ...newInventory } : variant
-          }),
-        ],
       })
     }
   }, [page.product, productInventory]);
@@ -114,7 +54,7 @@ const Product = ({ data }) => {
         <Layout
           site={site}
           page={page}
-          schema={getProductSchema(product, activeVariantID, site)}
+          schema={getProductSchema(product, site)}
         >
           {page.modules.map((module, key) => (
             <Module
@@ -122,9 +62,6 @@ const Product = ({ data }) => {
               index={key}
               module={module}
               product={product}
-              activeVariant={product.variants.find(
-                (v) => v.id == activeVariantID
-              )}
             />
           ))}
         </Layout>
@@ -134,13 +71,17 @@ const Product = ({ data }) => {
 }
 
 
-const getProductSchema = (product, activeVariantId, site) => {
+const getProductSchema = (product, site) => {
   const schema = {
     '@context': 'http://schema.org',
     '@type': 'Product',
     name: product.title,
     price: product.price,
     sku: product.sku,
+    // brand: {
+    //   '@type': 'Brand',
+    //   name: site.title,
+    // },
   }
 
   if (!product) {
@@ -166,7 +107,6 @@ export async function getStaticProps({ params, preview, previewData }) {
 // Fetch all product document slugs
 export async function getStaticPaths() {
   const allProducts = await getAllDocSlugs('product');
-  debugger;
   return {
     paths: allProducts.map((page) => {
       return {
