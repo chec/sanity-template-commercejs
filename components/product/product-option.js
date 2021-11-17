@@ -1,8 +1,6 @@
 import React from 'react'
 import cx from 'classnames'
 
-import { hasObject } from '@lib/helpers'
-
 import RadioGroup from '@components/radio-group'
 import RadioItem from '@components/radio-item'
 import Swatch from '@components/swatch'
@@ -64,17 +62,10 @@ const ProductOption = ({
 
 // handle option changes
 const changeOption = (name, value, changeCallback) => {
-  const newOptions = activeVariant.options.map((opt) =>
-    opt.name === name ? { ...opt, value: value } : opt
-  )
-
-  const newVariant = variants.find((variant) =>
-    variant.options.every((opt) => hasObject(newOptions, opt))
-  )
-
-  if (newVariant && changeCallback) {
-    changeCallback(newVariant.id)
+  if (changeCallback) {
+    changeCallback(value)
   }
 }
 
 export default ProductOption
+

@@ -71,17 +71,14 @@ const Product = ({ data }) => {
 }
 
 
-const getProductSchema = (product, site) => {
+const getProductSchema = (product) => {
   const schema = {
     '@context': 'http://schema.org',
     '@type': 'Product',
     name: product.title,
     price: product.price,
     sku: product.sku,
-    // brand: {
-    //   '@type': 'Brand',
-    //   name: site.title,
-    // },
+    description: product.description,
   }
 
   if (!product) {

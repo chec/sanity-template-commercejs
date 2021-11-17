@@ -14,13 +14,13 @@ export default {
         <>
           The{' '}
           <a
-            href="https://help.shopify.com/en/manual/online-store/domains"
+            href="https://dashboard.chec.io/settings/merchant"
             target="_blank"
             rel="noopener noreferrer"
           >
             custom domain or subdomain
           </a>{' '}
-          connected to your Shopify store
+          connected to your Chec hosted checkout store
         </>
       ),
       validation: Rule =>

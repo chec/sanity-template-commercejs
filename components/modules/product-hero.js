@@ -1,4 +1,5 @@
 import React from 'react'
+const stripTags = require('strip-tags');
 
 import BlockContent from '@components/block-content'
 import {
@@ -54,7 +55,7 @@ const ProductHero = ({ product, activeVariant, onVariantChange }) => {
 
             {product.description && (
               <div className="product--desc">
-                <BlockContent blocks={product.description} />
+                <BlockContent blocks={stripTags(product.description)} />
               </div>
             )}
 

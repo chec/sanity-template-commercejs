@@ -65,7 +65,6 @@ export default async function send(req, res) {
   }
 
   console.log('Webhook payload:', req.body);
-  // console.log('Payload variant groups:', req.body.payload.variant_groups?.map((group) => group.options));
 
   // Initiate Sanity transaction to perform the following chained mutations
   let sanityTransaction = sanity.transaction()
@@ -78,19 +77,6 @@ export default async function send(req, res) {
     console.info('Sync complete, product deleted!');
     return res.status(200).json(result);
   }
-
-  // Handle variants create or update
-  // if (req.body.event === 'variants.create' || req.body.event === 'variants.update') {
-  //   const result = await sanityTransaction.commit();
-
-  //   console.info('Sync complete, variants updated');
-  //   console.log('Result', result);
-
-  //   res.statusCode = 200;
-  //   res.json(JSON.stringify(result))
-
-  //   return;
-  // }
 
   // Handle products being created or updated
   // Extract the Commerce data from the webhook payload. The payloads are product responses.
@@ -146,44 +132,6 @@ export default async function send(req, res) {
     values: productOptions,
   };
 
-  // Define productVariant documents
-  const productVariants = variants
-    .sort((a, b) => (a.id > b.id ? 1 : -1))
-    .map((variant) => ({
-      _type: 'productVariant',
-      _id: `productVariant-${variant.id}`,
-    }))
-
-  // Define productVariant fields
-  const productVariantFields = variants
-    .sort((a, b) => (a.id > b.id ? 1 : -1))
-    .map((variant) => ({
-      isActive: status === 'active',
-      wasDeleted: false,
-      productName: title,
-      productID: id,
-      variantName: variant.title,
-      variantID: variant.id,
-      price: variant.price * 100,
-      comparePrice: variant.compare_at_price * 100,
-      sku: variant.sku || '',
-      inStock:
-        variant.inventory_quantity > 0 ||
-        variant.inventory_policy === 'continue',
-      lowStock: variant.inventory_quantity <= 5,
-      options:
-        variants.length > 1
-          ? options.map((option) => ({
-              _key: option.id,
-              _type: 'productOptionValue',
-              name: option.name,
-              value: variant[`option${option.position}`],
-              position: option.position,
-            }))
-          : [],
-    }))
-
-
   /*  ------------------------------ */
   /*  Begin Sanity Product Sync
   /*  ------------------------------ */
@@ -218,30 +166,6 @@ export default async function send(req, res) {
       ],
     })
   )
-
-  // create variant if doesn't exist & patch (update) variant with core shopify data
-  productVariants.forEach((variant, i) => {
-    sanityTransaction = sanityTransaction.createIfNotExists(variant)
-    sanityTransaction = sanityTransaction.patch(variant._id, (patch) => patch.set(productVariantFields[i]))
-    sanityTransaction = sanityTransaction.patch(variant._id, (patch) =>
-      patch.setIfMissing({ title: productVariantFields[i].variantTitle })
-    )
-  })
-
-  // // grab current variants
-  const currentVariants = await sanity.fetch(
-    `*[_type == "productVariant" && productID == ${id}]{
-      _id
-    }`
-  )
-
-  // mark deleted variants
-  currentVariants.forEach((cv) => {
-    const active = productVariants.some((v) => v._id === cv._id)
-    if (!active) {
-      sanityTransaction = sanityTransaction.patch(cv._id, (patch) => patch.set({ wasDeleted: true }))
-    }
-  })
 
   const result = await sanityTransaction.commit();
 

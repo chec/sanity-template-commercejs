@@ -32,8 +32,8 @@ const previews = ['page', 'product', 'category']
 
 const PreviewAction = props => {
   const slug = props.draft
-    ? props.draft.slug?.current
-    : props.published?.slug?.current
+    ? props.draft.slug
+    : props.published?.slug
   return {
     label: 'Open Preview',
     icon: () => <Eye weight="light" data-sanity-icon="eye" />,
@@ -46,20 +46,20 @@ const PreviewAction = props => {
   }
 }
 
-const ShopifyAction = props => {
+const CommerceAction = props => {
   const [isSyncing, setIsSyncing] = useState(false)
 
   const toast = useToast()
 
   return {
     disabled: !props.published?.productID,
-    label: isSyncing ? 'Syncing...' : 'Sync images to Shopify',
+    label: isSyncing ? 'Syncing...' : 'Sync images to Commerce',
     icon: () => <Storefront weight="light" data-sanity-icon="storefront" />,
     onHandle: () => {
       setIsSyncing(true)
 
       axios({
-        url: `${frontendURL}/api/shopify/product-images`,
+        url: `${frontendURL}/api/commerce/product-images`,
         method: 'POST',
         data: props.published
       })
@@ -112,7 +112,7 @@ export default function resolveDocumentActions(props) {
       DiscardChangesAction,
       DeleteAction,
       ...(canPreview ? [PreviewAction] : []),
-      ...(isProduct ? [ShopifyAction] : [])
+      ...(isProduct ? [CommerceAction] : [])
     ]
   }
 
