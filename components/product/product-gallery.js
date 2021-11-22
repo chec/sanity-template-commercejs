@@ -9,17 +9,13 @@ import Photo from '@components/photo'
 
 const ProductGallery = ({
   photosets,
-  activeVariant,
   hasArrows,
   hasThumbs,
   hasDots,
   hasDrag,
   hasCounter,
 }) => {
-  if (!photosets || !activeVariant) return null
-
-  // 1. extract the active variant's options
-  const { options } = activeVariant
+  if (!photosets) return null
 
   // 2. find the default photoset from the "forOption" field (default is blank)
   const defaultPhotoset = photosets.find((set) => !set.forOption)

@@ -8,4 +8,4 @@ const ProductPrice = ({ price }) => {
   )
 }
 
-export default ProductPrice
+export default ProductPrice;

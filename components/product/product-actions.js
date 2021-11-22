@@ -5,21 +5,21 @@ import {
   ProductAdd,
 } from '@components/product'
 
-const ProductActions = ({ activeVariant, klaviyoAccountID }) => {
+const ProductActions = ({ activeVariant, product, klaviyoAccountID }) => {
   // set default quantity
   const [quantity, setQuantity] = useState(1)
 
   return (
     <div className="product--actions">
-      {activeVariant?.inStock ? (
+      {product?.inStock ? (
         <>
           <ProductCounter
-            id={activeVariant.id}
+            id={product.id}
             max={10}
             onUpdate={setQuantity}
           />
           <ProductAdd
-            productID={activeVariant.id}
+            productID={product.id}
             quantity={quantity}
             className="btn is-primary is-large is-block"
           >

@@ -46,7 +46,6 @@
     "react-hook-form": "^7.10.1",
     "react-keyed-flatten-children": "^1.3.0",
     "sitemap": "^7.0.0",
-    "strip-tags": "^0.1.1",
     "swr": "^1.0.0",
     "use-intersection": "^0.2.1"
   },

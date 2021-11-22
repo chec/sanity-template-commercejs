@@ -5,6 +5,8 @@ import axios from 'axios';
 
 import { getProduct, getAllDocSlugs } from '@data';
 
+import { useSiteContext } from '@lib/context'
+
 import NotFoundPage from '@pages/404';
 import Layout from '@components/layout';
 import { Module } from '@components/modules';
@@ -19,6 +21,7 @@ const fetchInventory = (url, id) =>
 
 const Product = ({ data }) => {
   const router = useRouter();
+  const { isPageTransition } = useSiteContext()
 
   // Return NotFoundPage if no product is found
   if (!router.isFallback && !data) {

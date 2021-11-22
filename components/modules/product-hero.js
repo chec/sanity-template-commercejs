@@ -1,7 +1,5 @@
 import React from 'react'
-const stripTags = require('strip-tags');
 
-import BlockContent from '@components/block-content'
 import {
   ProductGallery,
   ProductPrice,
@@ -16,7 +14,6 @@ const ProductHero = ({ product, activeVariant, onVariantChange }) => {
         <div className="product--gallery">
           <ProductGallery
             photosets={product.photos.main}
-            activeVariant={activeVariant}
             hasArrows
             hasCounter
             hasThumbs
@@ -27,48 +24,25 @@ const ProductHero = ({ product, activeVariant, onVariantChange }) => {
           <div className="product--info">
             <div className="product--header">
               <div className="product--title">
-                {activeVariant && (
-                  <div className="product--variant">
-                    {activeVariant.title}
-
-                    {activeVariant.lowStock && activeVariant.inStock && (
-                      <span className="label is-active">Low Stock</span>
-                    )}
-
-                    {!activeVariant.inStock && (
-                      <span className="label is-secondary is-active">
-                        Out of Stock
-                      </span>
-                    )}
-                  </div>
-                )}
                 <h1 className="product--name">{product.title}</h1>
               </div>
 
-              <ProductPrice
-                price={activeVariant?.price || product.price}
-                comparePrice={
-                  activeVariant?.comparePrice || product.comparePrice
-                }
-              />
+              <ProductPrice price={product.price} />
             </div>
 
             {product.description && (
-              <div className="product--desc">
-                <BlockContent blocks={stripTags(product.description)} />
-              </div>
+              <div className="product--desc" dangerouslySetInnerHTML={{__html: product.description}} />
             )}
 
             <ProductForm
               product={product}
-              activeVariant={activeVariant}
               onVariantChange={onVariantChange}
               className="product--form"
             />
           </div>
 
           <ProductActions
-            activeVariant={activeVariant}
+            product={product}
             klaviyoAccountID={product.klaviyoAccountID}
           />
         </div>
