@@ -32,15 +32,15 @@ Commerce.js is a headless API-first commerce infrastructure for ultimate eCommer
    - Page-level SEO/Share settings with previews
    - Fallback global SEO/Share settings
 
-<br />
-
 ## Commerce.js features
 
 - Products and categories sync into Sanity studio using Chec webhooks
 - Product display pages with product information
 - Dynamic `/shop` category page with product grid
 
-# Getting started
+<br />
+
+# 🏁 Getting started
 
 ## Prerequisites
 
@@ -49,7 +49,7 @@ Commerce.js is a headless API-first commerce infrastructure for ultimate eCommer
 - [Chec webhooks](https://dashboard.chec.io/settings/webhooks/add) for syncing products and categories
 - [Products](https://dashboard.chec.io/products/add) and [categories](https://dashboard.chec.io/categories/add) uploaded into the Chec dashboard
 
-## ⚙️ Manual set up
+## ⚙️ Manual set-up
 
 Clone this repository from your GitHub account with the [Use this
 template](https://github.com/chec/sanity-template-commercejs/generate) button.
@@ -87,13 +87,11 @@ Go to the [developer webhooks page and add the following webhooks](https://dashb
   - Enter in the your Vercel URL (see note below) - `https://[subdomain].vercel.app/api/commerce/product-update`
   - Make note of the signing key as you will need this into the environment variables in the below [Next.js set up steps](#3-nextjs)
 
-![Products add webhook details](https://i.ibb.co/HqR7ZTr/products-webhooks.png)
-
 <p align="center">
 <img src="https://i.ibb.co/HqR7ZTr/products-webhooks.png" alt="Products add webhook details" align="center" />
 </p>
 
-2. Categories:
+1. **Categories**:
   - Add the events `categories.create`, `categories.update`, `categories.delete`
   - Enter in the your Vercel URL (see note below) - `https://[subdomain].vercel.app/api/commerce/category-update`
   - Make note of the signing key as you will need this into the environment variables in the below [Next.js set up steps](#3-nextjs)
