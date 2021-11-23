@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "title": "Stralar – Commerce.js starter",
+  "description": "Headless Commerce.js starter powered by Next.js + Sanity.io",
+  "previewMedia": {
+    "type": "image",
+    "src": ".sanity-template/assets/stralar-cover.png",
+    "alt": "stralar"
+  },
+  "deployment": {
+    "provider": "vercel",
+    "studio": {
+      "basePath": "/studio"
+    },
+    "envVars": {
+      "dataset": ["SANITY_PROJECT_DATASET"],
+      "projectId": ["SANITY_PROJECT_ID"]
+    },
+    "tokens": [
+        {
+            "label": "Live Preview",
+            "role": "write",
+            "envVar": "SANITY_API_TOKEN"
+        }
+    ],
+    "corsOrigins": [
+      {
+        "origin": "https://*.vercel.app",
+        "allowCredentials": true
+      },
+      {
+        "origin": "http://localhost:3000",
+        "allowCredentials": true
+      }
+    ]
+  },
+  "technologies": [
+    {
+      "id": "nextjs",
+      "name": "Next.js",
+      "url": "https://nextjs.org/"
+    },
+    {
+      "id": "vercel",
+      "name": "Vercel",
+      "url": "https://vercel.com/"
+    },
+    {
+      "id": "commercejs",
+      "name": "Commerce.js",
+      "url": "https://commercejs.com/"
+    }
+  ]
+}

@@ -2,35 +2,32 @@
 <img src="public/stralar-logo.svg" align="center" height="100" />
 </p>
 <p align="center">
-  <strong>Starter built on <a href="https://nextjs.org">Next.js</a></strong> 🤘 <br />
-  <strong>Commerce backend powered by <a href="https://nextjs.org">Commerce.js</a></strong> 🛍️ <br />
-  <strong>Headless CMS powered by <a href="https://sanity.io">Sanity.io</a></strong> ⚡<br />
+  <strong>Starter built on <a href="https://nextjs.org" target="_blank">Next.js</a></strong> 🤘<br />
+  <strong>Commerce backend powered by <a href="https://commercejs.com/" target="_blank">Commerce.js</a></strong> 🛍️<br />
+  <strong>Headless CMS powered by <a href="https://sanity.io" target="_blank">Sanity.io</a></strong> ⚡<br />
 </p>
 
 <p align="center">
-  <a href="#-features">Features</a> •
-  <a href="#-set-up">Set up</a> •
-  <a href="#-spin-up">Spin up</a> •
+    <a href="#-features">Features</a> •
+    <a href="#-set-up">Set up</a> •
+    <a href="#-spin-up">Spin up</a> •
     <a href="#-deployment">Deployment</a> •
-  <a href="#-extrastips">Extras</a>
+    <a href="#-extrastips">Extras</a>
 </p>
 <br />
 
-<br />
+## What is Commerce.js?
+
+Commerce.js is a headless API-first commerce infrastructure for ultimate eCommerce control giving developers and businesses the freedom to innovate and grow. Built for modern commerce development, you can create custom product, cart, and checkout models with our lightweight, flexible, and extensible APIs.
 
 # ✨ Features
 
 - Utility-first CSS with [Tailwind CSS](https://tailwindcss.com)
 - Animations powered by [Framer Motion](https://www.framer.com/motion/)
 - Dynamic Page Routes for custom page creation
-- Automatic `Sitemap.xml` generation
-- Automatic `robots.txt` generation
-- Automatic 301 Redirects from Sanity
 - Live preview content directly from Sanity
 - Modern image component using Sanity's Hotspot, Crop, and automatic WEBP format
 - Modular page content for all pages, including dynamic grid layouts
-- Customizable promotion banner
-- Customizable cookie notice
 - SEO features:
    - Page-level SEO/Share settings with previews
    - Fallback global SEO/Share settings
@@ -41,11 +38,18 @@
 
 - Products and categories sync into Sanity studio using Chec webhooks
 - Product display pages with product information
-- Cart actions using Commerce.js SDK methods
 - Dynamic `/shop` category page with product grid
 
+# Getting started
 
-# 💀 Manual set up
+## Prerequisites
+
+- A [Sanity account](https://www.sanity.io/)
+- A Sanity project created using the [Sanity CLI](https://www.sanity.io/docs/getting-started-with-sanity-cli)
+- [Chec webhooks](https://dashboard.chec.io/settings/webhooks/add) for syncing products and categories
+- [Products](https://dashboard.chec.io/products/add) and [categories](https://dashboard.chec.io/categories/add) uploaded into the Chec dashboard
+
+## ⚙️ Manual set up
 
 Clone this repository from your GitHub account with the [Use this
 template](https://github.com/chec/sanity-template-commercejs/generate) button.
@@ -85,17 +89,25 @@ Go to the [developer webhooks page and add the following webhooks](https://dashb
 
 ![Products add webhook details](https://i.ibb.co/HqR7ZTr/products-webhooks.png)
 
+<p align="center">
+<img src="https://i.ibb.co/HqR7ZTr/products-webhooks.png" alt="Products add webhook details" align="center" />
+</p>
+
 2. Categories:
   - Add the events `categories.create`, `categories.update`, `categories.delete`
   - Enter in the your Vercel URL (see note below) - `https://[subdomain].vercel.app/api/commerce/category-update`
   - Make note of the signing key as you will need this into the environment variables in the below [Next.js set up steps](#3-nextjs)
 
-![Categories add webhook details](https://i.ibb.co/1ZTsZJk/categories-webhooks.png)
+<p align="center">
+<img src="https://i.ibb.co/1ZTsZJk/categories-webhooks.png" alt="Categories add webhook details" align="center" />
+</p>
 
 Once you have added the webhooks for both products and categories and save them, you should see the following in your
 [webhooks list view](https://dashboard.chec.io/settings/webhooks).
 
-![Webhooks list view](https://i.ibb.co/wwWv9Jr/webhooks-list.png)
+<p align="center">
+<img src="https://i.ibb.co/wwWv9Jr/webhooks-list.png" alt="Webhooks list view" align="center" />
+</p>
 
 > ⚠️ **Note** <br />You have to use a real domain name (no localhost). Be sure to use your Vercel project URL during
 > development, and then switch to the production domain once live. You may not know your Vercel project URL until you
@@ -161,14 +173,26 @@ SENDGRID_API_KEY=XXXXXX
 <br />
 
 # ⚡ Spin Up
+### Sanity (Back End)
+`sanity start` in the `/studio` folder to start the studio locally
+   - Your Sanity Studio should be running on [http://localhost:3333](http://localhost:3333)
+
+Once you have added your products and categories in the Chec Dashboard and save them, you should expect to see all your products and categories listed under the shop tab and the data populated in the Sanity Studio fields.
+
+<p align="center">
+<img src="https://cdn.chec.io/chec-assets/integrations/sanity/screenshot.png" alt="Products listed in Sanity Studio" align="center" />
+</p>
 
 ### Next (Front End)
 `npm run dev` in the project folder to start the front end locally
    - Your front end should be running on [http://localhost:3000](http://localhost:3000)
 
-### Sanity (Back End)
-`sanity start` in the `/studio` folder to start the studio locally
-   - Your Sanity Studio should be running on [http://localhost:3333](http://localhost:3333)
+You will need to [build out the rest of the product modules](#-extrastips) to see the displayed data in the front-end. Once you’ve done that, you should be able to see your product display pages rendered like so:
+
+<p align="center">
+<img src="https://cdn.chec.io/chec-assets/integrations/sanity/screenshot-2.png"
+    alt="Products display page in Next.js front-end" align="center" />
+</p>
 
 <br />
 
