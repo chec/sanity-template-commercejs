@@ -144,14 +144,14 @@ NEXT_PUBLIC_CHEC_PUBLIC_KEY=XXXXXX
 CHEC_API_URL=api.chec.io
 CHEC_WEBHOOK_SIGNING_KEY=XXXXXX
 
-// Needed for Klaviyo forms):
+# Needed for Klaviyo forms):
 KLAVIYO_API_KEY=XXXXXX
 
-// Needed for Mailchimp forms:
+# Needed for Mailchimp forms:
 MAILCHIMP_API_KEY=XXXXXX-usX
 MAILCHIMP_SERVER=usX
 
-// Needed for SendGrid forms:
+# Needed for SendGrid forms:
 SENDGRID_API_KEY=XXXXXX
 ```
 3. Update all the `XXXXXX` values, here's where to find each:
