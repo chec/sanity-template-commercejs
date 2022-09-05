@@ -53,7 +53,7 @@ module.exports = {
       ],
     },
   },
-  darkMode: false,
+  darkMode: true,
   theme: {
     colors: {
       transparent: 'transparent',

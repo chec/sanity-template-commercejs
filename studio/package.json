@@ -33,6 +33,7 @@
     "styled-components": "^5.3.0"
   },
   "devDependencies": {
+    "@types/react": "^18.0.18",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.30.0",
     "eslint-config-standard": "^16.0.3",

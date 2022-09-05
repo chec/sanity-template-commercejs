@@ -58,7 +58,7 @@ template](https://github.com/chec/sanity-template-commercejs/generate) button.
 1. If you don't have the [Sanity CLI](https://www.sanity.io/docs/getting-started-with-sanity-cli) installed, first run
    `npm install -g @sanity/cli` to install it globally
 2. `npm install && sanity init` in the `/studio` folder
-3. During Sanity's initalization it will warn you, type `Y` and hit `enter`:
+3. During Sanity's initialization it will warn you, type `Y` and hit `enter`:
 ```
 ? The current folder contains a configured Sanity studio. Would you like to reconfigure it? (Y/n)
 ```
@@ -77,7 +77,7 @@ template](https://github.com/chec/sanity-template-commercejs/generate) button.
 
 ### 2) Chec webhooks
 
-In order for the products and categories to sync into Sanity, you will need to set up the neccessary webhooks for the
+In order for the products and categories to sync into Sanity, you will need to set up the necessary webhooks for the
 products and categories endpoints in your Chec merchant account.
 
 Go to the [developer webhooks page and add the following webhooks](https://dashboard.chec.io/settings/webhooks/add):
@@ -133,25 +133,30 @@ storefront.
 ### 3) NextJS
 1. `npm install` in the project root folder on local
 2. Create an `.env.local` file in the project folder, and add the following variables:
-```
+
 # Sanity project environment variables
+```
 SANITY_PROJECT_DATASET=production
 SANITY_PROJECT_ID=XXXXXX
 SANITY_API_TOKEN=XXXXXX
-
+```
 # Chec/Commerce.js environment variables
+```
 NEXT_PUBLIC_CHEC_PUBLIC_KEY=XXXXXX
 CHEC_API_URL=api.chec.io
 CHEC_WEBHOOK_SIGNING_KEY=XXXXXX
-
+```
 # Needed for Klaviyo forms):
+```
 KLAVIYO_API_KEY=XXXXXX
-
+```
 # Needed for Mailchimp forms:
+```
 MAILCHIMP_API_KEY=XXXXXX-usX
 MAILCHIMP_SERVER=usX
-
+```
 # Needed for SendGrid forms:
+```
 SENDGRID_API_KEY=XXXXXX
 ```
 3. Update all the `XXXXXX` values, here's where to find each:
