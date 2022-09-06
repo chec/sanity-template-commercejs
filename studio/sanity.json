@@ -2,7 +2,7 @@
   "root": true,
   "api": {
     "projectId": "9kfdafro",
-    "dataset": "sandbox"
+    "dataset": "production"
   },
   "project": {
     "name": "Sanity Commerce.js",
