@@ -20,7 +20,7 @@ const addUrls = async (smStream: SitemapStream) => {
   const allPages = await getAllDocSlugs('page')
   
   allPages.map((page) => {
-    smStream.write({ url: `/${page.slug}`, changefreq: 'weekly', priority: 0.8 })
+    smStream.write({ url: `/${page.slug.current}`, changefreq: 'weekly', priority: 0.8 })
   })
 }
 

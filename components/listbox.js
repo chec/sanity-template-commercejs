@@ -125,10 +125,10 @@ const Listbox = ({
                         value={option.slug}
                         role="option"
                         aria-selected={
-                          option.slug === currentOption.slug ? 'true' : 'false'
+                          option.slug.current === currentOption.slug.current ? 'true' : 'false'
                         }
                         className={cx('listbox--item', {
-                          'is-active': option.slug === currentOption.slug,
+                          'is-active': option.slug.current === currentOption.slug.current,
                         })}
                       >
                         {option.title}

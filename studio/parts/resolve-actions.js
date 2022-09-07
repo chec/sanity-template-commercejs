@@ -31,16 +31,15 @@ const editAndDelete = ['product']
 const previews = ['page', 'product', 'category']
 
 const PreviewAction = props => {
-  const slug = props.draft
-    ? props.draft.slug
-    : props.published?.slug
+  const slug = props.draft ? props.draft.slug : props.published?.slug
   return {
     label: 'Open Preview',
     icon: () => <Eye weight="light" data-sanity-icon="eye" />,
     onHandle: () => {
       window.open(
-        `${frontendURL}/api/preview?token=HULL&type=${props.type}&slug=${slug ||
-          ''}`
+        `${frontendURL}/api/preview?token=HULL&type=${
+          props.type
+        }&slug=${slug || ''}`
       )
     }
   }

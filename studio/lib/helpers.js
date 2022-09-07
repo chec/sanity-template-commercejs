@@ -79,7 +79,7 @@ export const assemblePageUrl = ({ document, options }) => {
     return ''
   }
 
-  return previewURL + (slug ? `/${slug}` : '')
+  return previewURL + (slug ? `/${slug.current}` : '')
 }
 
 export const decodeAssetUrl = id => {

@@ -197,15 +197,15 @@ const FilterOption = ({ option, activeOptions, onChange }) => {
     >
       <div className="control">
         <input
-          id={`filter-${slug}`}
+          id={`filter-${slug.current}`}
           name={filterGroup}
           type="checkbox"
           value={slug}
-          checked={values?.includes(slug) || false}
+          checked={values?.includes(slug.current) || false}
           onChange={handleFilterChange}
         />
         <label
-          htmlFor={`filter-${slug}`}
+          htmlFor={`filter-.current}`}
           className="control--label for-checkbox"
         >
           <div className="filter-option--icon">

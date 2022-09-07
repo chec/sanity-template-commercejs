@@ -33,11 +33,11 @@ export async function getStaticPage(pageData, preview) {
 
 // Fetch a specific dynamic page with our global data
 export async function getPage(slug, preview) {
-  const slugs = [`/${slug}`, slug, `/${slug}/`]
+  const slugs = [`/${slug.current}`, slug.current, `/${slug.current}/`]
 
   const query = `
     {
-      "page": *[_type == "page" && slug in ${JSON.stringify(
+      "page": *[_type == "page" && slug.current in ${JSON.stringify(
     slugs
   )}] | order(_updatedAt desc)[0]{
         hasTransparentHeader,
@@ -60,7 +60,7 @@ export async function getPage(slug, preview) {
 export async function getProduct(slug, preview) {
   const query = `
     {
-      "page": *[_type == "product" && slug == "${slug}" && wasDeleted != true && isDraft != true] | order(_updatedAt desc)[0]{
+      "page": *[_type == "product" && slug.current == "${slug.current}" && wasDeleted != true && isDraft != true] | order(_updatedAt desc)[0]{
         hasTransparentHeader,
         modules[]{
           ${queries.modules}
@@ -82,7 +82,7 @@ export async function getProduct(slug, preview) {
 export async function getCategory(slug, preview) {
   const query = `
     {
-      "page": *[_type == "category" && slug == "${slug}"] | order(_updatedAt desc)[0]{
+      "page": *[_type == "category" && slug.current == "${slug.current}"] | order(_updatedAt desc)[0]{
         hasTransparentHeader,
         modules[]{
           ${queries.modules}

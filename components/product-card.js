@@ -90,7 +90,7 @@ const ProductCard = React.forwardRef(
           <div className="product-card--header">
             <h2 className="product-card--title">
               <Link
-                href={`/products/${product.slug}`}
+                href={`/products/${product.slug.current}`}
                 scroll={false}
               >
                 <a className="product-card--link" onClick={onClick}>

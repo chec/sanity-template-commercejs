@@ -1,12 +1,12 @@
-import React from 'react'
-import NextLink from 'next/link'
-import cx from 'classnames'
+import React from 'react';
+import NextLink from 'next/link';
+import cx from 'classnames';
 
-import { getStaticRoute, getDynamicRoute } from '@lib/routes'
+import { getStaticRoute, getDynamicRoute } from '@lib/routes';
 
 const Link = ({ link, children, ...rest }) => {
-  const isLink = !!link.url
-  const isStatic = getStaticRoute(link.page?.type)
+  const isLink = !!link.url;
+  const isStatic = getStaticRoute(link.page?.type);
 
   // External Link
   if (isLink) {
@@ -27,11 +27,11 @@ const Link = ({ link, children, ...rest }) => {
       >
         {link.title || children}
       </a>
-    )
+    );
     // Internal Page
   } else {
-    const isDynamic = getDynamicRoute(link.page?.type)
-    const isHome = link.page?.isHome
+    const isDynamic = getDynamicRoute(link.page?.type);
+    const isHome = link.page?.isHome;
 
     return (
       <NextLink
@@ -40,7 +40,7 @@ const Link = ({ link, children, ...rest }) => {
             ? '/'
             : isStatic !== false
             ? `/${isStatic}`
-            : `/${isDynamic ? `${isDynamic}/` : ''}${link.page?.slug}`
+            : `/${isDynamic ? `${isDynamic}/` : ''}${link.page?.slug.current}`
         }
         scroll={false}
       >
@@ -58,8 +58,8 @@ const Link = ({ link, children, ...rest }) => {
           {link.title || children}
         </a>
       </NextLink>
-    )
+    );
   }
-}
+};
 
-export default Link
+export default Link;

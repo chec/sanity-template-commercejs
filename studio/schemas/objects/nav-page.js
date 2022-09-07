@@ -36,7 +36,7 @@ export default {
         subtitle:
           isStatic !== false
             ? `/${isStatic}`
-            : `/${isDynamic ? `${isDynamic}/` : ''}${pageSlug}`
+            : `/${isDynamic ? `${isDynamic}/` : ''}${pageSlug.current}`
       }
     }
   }
